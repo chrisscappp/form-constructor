@@ -1,0 +1,33 @@
+{
+  "compilerOptions": {
+    "outDir": "./dist/",
+    "noImplicitAny": true,
+    "module": "ES2022",
+    "target": "es5",
+    "jsx": "react-jsx",
+    "allowJs": true,
+    "strict": true,
+    "moduleResolution": "node",
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
+    "baseUrl": ".",
+    "paths": {
+      "*": ["./src/*"]
+    }
+  },
+  "ts-node": {
+    "compilerOptions": {
+      "module": "CommonJS",
+      "types": [
+        "node",
+        "jest", 
+        "@testing-library/jest-dom"
+      ]
+    }
+  },
+   "include": [
+    "./src/**/*.ts",
+    "./src/**/*.tsx", // чтобы подхватывались все типы
+    "./config/jest/setupTests.ts"
+  ],
+}

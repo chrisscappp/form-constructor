@@ -1,0 +1,18 @@
+.FormInstrumentPanel {
+	padding: 10px;
+	width: 200px;
+	height: 60px;
+	display: flex;
+	justify-content: space-around;
+}
+
+.iconWrap {
+	background: var(--bg-color);
+	width: 40px;
+	border-radius: 50%;
+}
+
+.icon {
+	width: 20px;
+	height: 20px;
+}

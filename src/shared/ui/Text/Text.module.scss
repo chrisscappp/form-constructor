@@ -1,0 +1,82 @@
+.Text {
+	
+}
+
+.title {
+	font-family: "Roboto", sans-serif;
+	font-weight: 500;
+	font-style: normal;
+}
+
+.subTitle {
+	font-family: "Roboto", sans-serif;
+	font-weight: 500;
+	font-style: normal;
+}
+
+.text {
+	font-family: "Roboto", sans-serif;
+	font-weight: 300;
+	font-style: normal;
+}
+
+.primary {
+	color: var(--primary-color);
+}
+
+.secondary {
+	color: var(--secondary-color);
+}
+
+.grey {
+	color: var(--grey-light);
+}
+
+.error {
+	color: var(--red-light)
+}
+
+.size_s {
+	font-size: var(--font-size-s);
+}
+
+.size_m {
+	font-size: var(--font-size-m);
+}
+
+.size_ml {
+	font-size: var(--font-size-ml);
+}
+
+.size_l {
+	font-size: var(--font-size-l);
+}
+
+.size_xl {
+	font-size: var(--font-size-xl);
+}
+
+.size_xxl {
+	font-size: var(--font-size-xxl);
+}
+
+.align_right {
+	text-align: right;
+}
+
+.align_left {
+	text-align: left;
+}
+
+.align_center {
+	text-align: center;
+}
+
+.link {
+	cursor: pointer;
+	transition: 0.3s;
+}
+
+.link:hover {
+	color: var(--grey-dark);
+}

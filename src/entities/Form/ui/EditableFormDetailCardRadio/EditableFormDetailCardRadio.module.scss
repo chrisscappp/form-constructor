@@ -1,0 +1,64 @@
+.radios {
+	margin-top: 8px;
+}
+
+.questionHeader {
+	display: flex;
+	align-items: center;
+}
+
+.questionPanel {
+	margin-left: auto;
+	display: flex;
+	align-items: center;
+}
+
+.btn {
+	border-radius: 50% !important;
+	background-color: white;
+}
+
+.removeBtn {
+	margin-left: 4px;
+}
+
+.icon {
+	width: 20px;
+	height: 20px;
+}
+
+.description {
+	margin-top: 2px;
+}
+
+.hint {
+	margin-top: 10px;
+}
+
+.input {
+	margin-top: 4px;
+}
+
+.answer {
+	display: flex;
+	align-items: center;
+	margin-top: 10px;
+}
+
+.answerBtn {
+	color: black;
+}
+
+.inputAnswer {
+	margin-left: 10px;
+}
+
+.line {
+	margin-bottom: 40px;
+}
+
+.plusBtn {
+	color: black;
+	margin-left: auto;
+	margin-top: 12px;
+}

@@ -1,0 +1,21 @@
+.Navbar {
+	width: 100%;
+	background: var(--inverted-bg-color);
+	display: flex;
+	align-items: center;
+	padding: 20px 30px;
+	font-family: "Roboto", sans-serif;
+	font-weight: 300;
+	font-style: normal;
+	height: var(--navbar-height);
+}
+
+.menu {
+	width: 40px;
+	height: 40px;
+	cursor: pointer;
+	transition: 0.3s;
+	&:hover {
+		opacity: 0.7;
+	}
+}

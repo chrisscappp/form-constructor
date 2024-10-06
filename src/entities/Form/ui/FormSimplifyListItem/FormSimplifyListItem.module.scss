@@ -1,0 +1,40 @@
+.FormSimplifyListItem {
+	padding: 20px 40px;
+}
+
+.info {
+	width: 60%;
+}
+
+.description {
+	margin-top: 6px;
+}
+
+.footer {
+	margin-top: 30px;
+	display: flex;
+}
+
+.dateWrapper {
+	display: flex;
+}
+
+.eye,
+.calendar {
+	width: 24px;
+	height: 24px;
+}
+
+.filledWrapper {
+	display: flex;
+	margin-top: 3px;
+}
+
+.filled,
+.date {
+	margin-left: 5px;
+}
+
+.button {
+	margin-left: auto;
+}

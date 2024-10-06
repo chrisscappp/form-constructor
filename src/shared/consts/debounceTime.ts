@@ -1,0 +1,1 @@
+export const DEBOUNCE_EDIT_FORM = 1000

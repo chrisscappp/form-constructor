@@ -1,0 +1,22 @@
+.Page {
+	padding: 20px;
+	width: var(--desktop-container);
+}
+
+@media (max-width: 1280px) {
+	.Page {
+		width: var(--tablet-container);
+	}
+}
+
+@media (max-width: 1000px) {
+	.Page {
+		width: var(--mobile-container);
+	}
+}
+
+@media (max-width: 786px) {
+	.Page {
+		width: 100%;
+	}
+}

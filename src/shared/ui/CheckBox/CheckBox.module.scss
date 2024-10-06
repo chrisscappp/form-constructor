@@ -1,0 +1,21 @@
+.CheckBox {
+	width: 30px;
+	height: 30px;
+}
+
+.wrap {
+	display: flex;
+	align-items: center;
+	margin-bottom: 4px;
+	margin-top: 8px;
+}
+
+.checkbox {
+	width: 16px;
+	height: 16px;
+	cursor: pointer;
+}
+
+.checkboxText {
+	margin-left: 10px;
+}

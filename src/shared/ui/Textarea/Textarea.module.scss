@@ -1,0 +1,14 @@
+.TextArea {
+	border-radius: 5px;
+	padding: 10px;
+	outline: none;
+	width: 100%;
+	background: var(--bg-color);
+	resize: none;
+	border: 2px solid black;
+	color: var(--primary-color);
+}
+
+.readonly {
+	border: none;
+}
