@@ -3,7 +3,7 @@ import { FormDetail, FormQuestion } from "../../model/types/form"
 import { memo, useCallback } from "react"
 import { classNames } from "shared/lib/classNames/classNames"
 import cls from "./FormDetailCard.module.scss"
-import { Text, TextSize } from "shared/ui/Text/Text"
+import { Text, TextSize, TextTheme } from "shared/ui/Text/Text"
 import CalendarIcon from "shared/assets/icons/calendar-icon.svg"
 import EyeIcon from "shared/assets/icons/eye-icon.svg"
 import { FormDetailCardInput } from "../FormDetailCardInput/FormDetailCardInput"
@@ -16,11 +16,14 @@ import { ChangeInputFieldActionPayload, ChangeRadioFieldActionPayload } from "fe
 import { Button, ButtonTheme } from "shared/ui/Button/Button"
 import { Input } from "shared/ui/Input/Input"
 import AddFormIcon from "shared/assets/icons/add__to__list-icon.svg"
+import { ValidateErrors } from "feautures/EditableFormDetailCard"
+import { QuestionError, ValidateFormErrors } from "feautures/EditableFormDetailCard/model/types/editableForm"
 
 interface FormDetailCardProps {
 	form?: FormDetail,
 	isLoading?: boolean,
 	error?: string,
+	validateErrors?: ValidateErrors,
 	className?: string,
 	isReadonly?: boolean,
 	onOpenAddForm?: () => void,
@@ -35,6 +38,10 @@ interface FormDetailCardProps {
 	onDeleteQuestion?: (qIndex: number) => void
 }
 
+const validateErrorsTranslate = {
+	[ValidateFormErrors.EMPTY_TITLE]: "Название формы должно быть заполнено!"
+}
+
 export const FormDetailCard = memo((props: FormDetailCardProps) => {
 
 	const {
@@ -43,6 +50,7 @@ export const FormDetailCard = memo((props: FormDetailCardProps) => {
 		form,
 		isLoading,
 		isReadonly,
+		validateErrors,
 		onOpenAddForm,
 		onChangeFormTitle,
 		onChangeFormDescription,
@@ -70,6 +78,8 @@ export const FormDetailCard = memo((props: FormDetailCardProps) => {
 	}, [])
 
 	const renderEditableBlock = useCallback((question: FormQuestion, qIndex: number) => {
+		//@ts-ignore
+		const errors: QuestionError = validateErrors?.questions[qIndex]
 		switch(question.type) {
 			case "input": 
 				return <EditableFormDetailCardInput 
@@ -77,6 +87,7 @@ export const FormDetailCard = memo((props: FormDetailCardProps) => {
 					className={cls.editableQuestion} 
 					question={question}
 					qIndex={qIndex}
+					validateErrors={errors}
 					onChangeInputField={onChangeInputField}
 					onUndoChangesForQuestion={onUndoChangesForQuestion}
 					onDeleteQuestion={onDeleteQuestion}
@@ -87,6 +98,7 @@ export const FormDetailCard = memo((props: FormDetailCardProps) => {
 					className={cls.editableQuestion} 
 					question={question}
 					qIndex={qIndex}
+					validateErrors={errors}
 					onChangeInputField={onChangeInputField}
 					onUndoChangesForQuestion={onUndoChangesForQuestion}
 					onDeleteQuestion={onDeleteQuestion}
@@ -97,6 +109,7 @@ export const FormDetailCard = memo((props: FormDetailCardProps) => {
 					className={cls.editableQuestion} 
 					question={question}
 					qIndex={qIndex}
+					validateErrors={errors}
 					onAddRadioField={onAddRadioField}
 					onDeleteAnswerField={onDeleteAnswerField}
 					onChangeRadioField={onChangeRadioField}
@@ -109,6 +122,7 @@ export const FormDetailCard = memo((props: FormDetailCardProps) => {
 					className={cls.editableQuestion} 
 					question={question}
 					qIndex={qIndex}
+					validateErrors={errors}
 					onAddRadioField={onAddRadioField}
 					onDeleteAnswerField={onDeleteAnswerField}
 					onChangeRadioField={onChangeRadioField}
@@ -118,7 +132,7 @@ export const FormDetailCard = memo((props: FormDetailCardProps) => {
 			default:
 				return null
 		}
-	}, [])
+	}, [validateErrors])
 
 	if (isLoading) {
 		<Card className={classNames(cls.FormCard, {}, [className])}>
@@ -149,6 +163,13 @@ export const FormDetailCard = memo((props: FormDetailCardProps) => {
 								placeholder='Введите название формы...'
 							/>
 						</>
+					)}
+					{validateErrors?.title && (
+						<Text 
+							theme={TextTheme.ERROR} 
+							text={validateErrorsTranslate[validateErrors.title]}
+							className={cls.error}
+						/>
 					)}
 					{form?.description && isReadonly ? (
           				<Text

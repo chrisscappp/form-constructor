@@ -1,7 +1,7 @@
 import { memo, useCallback } from "react"
 import cls from "./EditableFormDetailCardInput.module.scss"
 import { classNames } from "shared/lib/classNames/classNames"
-import { Text, TextSize } from "shared/ui/Text/Text"
+import { Text, TextSize, TextTheme } from "shared/ui/Text/Text"
 import { FormQuestion } from "../../model/types/form"
 import { Input } from "shared/ui/Input/Input"
 import { ChangeInputFieldActionPayload } from "feautures/EditableFormDetailCard"
@@ -10,14 +10,20 @@ import UndoIcon from "shared/assets/icons/go-back-arrow.svg"
 import RemoveIcon from "shared/assets/icons/trash-icon.svg"
 import { TextArea } from "shared/ui/Textarea/Textarea"
 import { useAppDispatch } from "shared/lib/hooks/useAppDispatch"
+import { QuestionError, ValidateFormErrors } from "feautures/EditableFormDetailCard/model/types/editableForm"
 
 interface EditableFormDetailCardInputProps {
 	className?: string,
 	question?: FormQuestion,
 	qIndex?: number,
+  validateErrors?: QuestionError,
 	onChangeInputField?: (data: ChangeInputFieldActionPayload) => void,
 	onUndoChangesForQuestion?: (qId: number, qIndex: number) => void,
 	onDeleteQuestion?: (qIndex: number) => void
+}
+
+const validateErrorsTranslate = {
+	[ValidateFormErrors.EMPTY_QUESTION_TITLE]: "У вопроса должно быть название!"
 }
 
 export const EditableFormDetailCardInput = memo((props: EditableFormDetailCardInputProps) => {
@@ -26,6 +32,7 @@ export const EditableFormDetailCardInput = memo((props: EditableFormDetailCardIn
 		className,
 		question,
 		qIndex = 0,
+    validateErrors,
 		onChangeInputField,
 		onUndoChangesForQuestion,
 		onDeleteQuestion
@@ -90,6 +97,13 @@ export const EditableFormDetailCardInput = memo((props: EditableFormDetailCardIn
         className={cls.input}
         onChange={onChangeTitle}
       />
+      {validateErrors?.title && (
+				<Text
+					theme={TextTheme.ERROR} 
+					text={validateErrorsTranslate[validateErrors.title]}
+					className={cls.error}
+				/>
+			)}
       <Text title={"Описание:"} size={TextSize.M} className={cls.hint} />
       <Input
         value={question?.description}

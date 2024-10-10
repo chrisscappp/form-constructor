@@ -6,4 +6,4 @@ export const getEditableFormDetailIsLoading = (state: StateSchema) => state.form
 export const getEditableFormDetailError = (state: StateSchema) => state.formDetail?.error
 export const getEditableFormDetailReadonly = (state: StateSchema) => state.formDetail?.readonly
 export const getEditableFormDetailIsDebounceActive = (state: StateSchema) => state.formDetail?.isDebounceActive
-export const getEditableFormDetailValidateErrors = (state: StateSchema) => state.formDetail?.validateErrors || []
+export const getEditableFormDetailValidateErrors = (state: StateSchema) => state.formDetail?.validateErrors

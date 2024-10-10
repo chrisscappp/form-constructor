@@ -26,3 +26,9 @@ type DeepPartial<T> = T extends object ? {
 
 declare const $CombinedState: unique symbol
 type CombinedState<S> = { readonly [$CombinedState]?: undefined } & S
+
+// custom types
+
+type OptionalRecord<K extends keyof any, T> = {
+    [P in K]?: T
+}
