@@ -146,6 +146,11 @@ const editableFormDetailSlice = createSlice({
     setIsDebounceActive: (state, action: PayloadAction<boolean>) => {
       state.isDebounceActive = action.payload
     },
+    validateFormCard: (state, action: PayloadAction<any>) => {
+      // с появлением backend эта логика будет находится в async action
+      const errors = validateFormCard(action.payload)
+      state.validateErrors = errors
+    },
     changeFormTitle: (state, action: PayloadAction<string>) => {
       if (state.form) {
         state.form.title = action.payload
@@ -220,6 +225,7 @@ const editableFormDetailSlice = createSlice({
               const answer = question.answers[aIndex];
               if (answer) {
                 answer.content = newValue
+                answer.value = newValue
                 question.answers[aIndex] = answer
               }
             }
@@ -245,6 +251,7 @@ const editableFormDetailSlice = createSlice({
               const answer = question.answers[aIndex];
               if (answer) {
                 answer.content = newValue
+                answer.value = newValue
                 question.answers[aIndex] = answer
               }
             }

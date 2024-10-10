@@ -1,23 +1,56 @@
-import { FormDetail } from "entities/Form";
+import { FormDetail } from "entities/Form"
+import { 
+	QuestionAnswerError,
+	QuestionError, 
+	ValidateErrors, 
+	ValidateFormErrors
+} from "../../types/editableForm"
 
-export function validateFormCard(form: FormDetail) {
-	
+export function validateFormCard(form?: FormDetail) {
+	let errors: ValidateErrors = {
+		title: "",
+		emptyForm: "",
+		questions: {}
+	}
+
 	if (!form) {
-		return ['Форма не найдена']
+		errors.emptyForm = ValidateFormErrors.NO_DATA
+		return errors
 	}
 
-	let errors: string[] = []
-
-	for (let i = 0; i < form.questions.length; i++) {
-		if (
-      form.questions[i].type !== "input" &&
-      form.questions[i].type !== "textarea" &&
-      form.questions[i].answers?.length === 0
-    ) {
-      errors.push("На все вопросы в форме должен быть дан ответ");
-      break;
-    }
+	if (!form.title) {
+		errors.title = ValidateFormErrors.EMPTY_TITLE
 	}
-	
+
+	const questions = [...form.questions]
+
+	questions.forEach((question, qIndex) => {
+		const questionError: QuestionError = {}
+		if (!question.title) {
+			questionError.title = ValidateFormErrors.EMPTY_QUESTION_TITLE
+		}
+		if (question.type === "radio" || question.type === "checkbox") {
+			if (question.answers?.length === 0) {
+				questionError.emptyAnswers = ValidateFormErrors.EMPTY_QUESTION_ANSEWRS
+			} else {
+				const answerErrors: QuestionAnswerError = {}
+				question.answers?.forEach((answer, aIndex) => {
+					if (!answer.content || !answer.value) {
+						answerErrors[aIndex] = ValidateFormErrors.EMPTY_QUESTION_ANSEWRS_TITLE
+					}
+				})
+				const keys = Object.keys(answerErrors)
+				if (keys.length > 0) {
+					questionError.answersErrors = answerErrors
+				}
+			}
+		}
+		const keys = Object.keys(questionError)
+		if (keys.length > 0) {
+			//@ts-ignore
+			errors.questions[qIndex] = questionError
+		}	
+	})
+
 	return errors
 }

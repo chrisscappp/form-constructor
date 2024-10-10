@@ -3,20 +3,22 @@ import cls from "./EditableFormDetailCardRadio.module.scss"
 import { classNames } from "shared/lib/classNames/classNames"
 import { Radio, RadioItem } from "shared/ui/Radio/Radio"
 import { FormQuestion, FormQuestionAnswer } from "../../model/types/form"
-import { Text, TextSize } from "shared/ui/Text/Text"
+import { Text, TextSize, TextTheme } from "shared/ui/Text/Text"
 import { Button, ButtonSize } from "shared/ui/Button/Button"
 import UndoIcon from "shared/assets/icons/go-back-arrow.svg"
 import RemoveIcon from "shared/assets/icons/trash-icon.svg"
 import { Input } from "shared/ui/Input/Input"
 import { useDebounce } from "shared/lib/hooks/useDebounce"
 import { DEBOUNCE_EDIT_FORM } from "shared/consts/debounceTime"
-import { ChangeRadioFieldActionPayload } from "feautures/EditableFormDetailCard"
+import { ChangeRadioFieldActionPayload, ValidateErrors } from "feautures/EditableFormDetailCard"
 import { InputRadioAnswer } from "./InputRadioAnswer"
+import { QuestionError, ValidateFormErrors } from "feautures/EditableFormDetailCard/model/types/editableForm"
 
 interface EditableFormDetailCardRadioProps {
 	className?: string,
 	question?: FormQuestion,
 	qIndex?: number,
+	validateErrors?: QuestionError,
 	onAddRadioField?: (qIndex: number) => void,
 	onDeleteAnswerField?: (qIndex: number, aIndex: number) => void,
 	onChangeRadioField?: (data: ChangeRadioFieldActionPayload) => void,
@@ -24,11 +26,19 @@ interface EditableFormDetailCardRadioProps {
 	onDeleteQuestion?: (qIndex: number) => void
 }
 
+const validateErrorsTranslate = {
+	[ValidateFormErrors.EMPTY_QUESTION_TITLE]: "У вопроса должно быть название!",
+	[ValidateFormErrors.EMPTY_QUESTION_ANSEWRS]: "Должен быть хотя бы один ответ на вопрос!",
+	[ValidateFormErrors.EMPTY_QUESTION_ANSEWRS_TITLE]: "Это поле должно быть заполнено!",
+	[ValidateFormErrors.EMPTY_ERROR]: ""
+}
+
 export const EditableFormDetailCardRadio = memo((props: EditableFormDetailCardRadioProps) => {
 	
 	const {
 		className,
 		question,
+		validateErrors,
 		onAddRadioField,
 		onDeleteAnswerField,
 		onChangeRadioField,
@@ -110,6 +120,13 @@ export const EditableFormDetailCardRadio = memo((props: EditableFormDetailCardRa
         		className={cls.input}
         		onChange={onChangeTitle}
       		/>
+			{validateErrors?.title && (
+				<Text
+					theme={TextTheme.ERROR} 
+					text={validateErrorsTranslate[validateErrors.title]}
+					className={cls.error}
+				/>
+			)}
       		<Text title={"Описание:"} size={TextSize.M} className={cls.hint} />
       		<Input
         		value={descriptionValue}
@@ -120,17 +137,33 @@ export const EditableFormDetailCardRadio = memo((props: EditableFormDetailCardRa
 			<Text title={"Ответы:"} size={TextSize.M} className={cls.hint} />
 			<div className={cls.answers}>
 				{question?.answers?.length ? question.answers.map((answer, aIndex) => (
-					<InputRadioAnswer
-						key={String(answer.value) + answer.id}
-						answer={answer}
-						onChangeContent={onChangeContent}
-						aIndex={aIndex}
-						onDelete={onDelete}
-					/>
+					<>
+						<InputRadioAnswer
+							key={String(answer.value) + answer.id}
+							answer={answer}
+							onChangeContent={onChangeContent}
+							aIndex={aIndex}
+							onDelete={onDelete}
+						/>
+						{validateErrors?.answersErrors && (
+							<Text
+								theme={TextTheme.ERROR}
+								text={validateErrorsTranslate[validateErrors.answersErrors[aIndex] || ValidateFormErrors.EMPTY_ERROR]}
+								className={cls.error}
+							/>
+						)}
+					</>
 				)) : (
 					<Text
 						text="Список ответов пуст. Нажмите +, чтобы добавить!"
 						className={cls.hint}
+					/>
+				)}
+				{validateErrors?.emptyAnswers && (
+					<Text
+						theme={TextTheme.ERROR} 
+						text={validateErrorsTranslate[validateErrors.emptyAnswers]}
+						className={cls.error}
 					/>
 				)}
 			</div>

@@ -73,15 +73,17 @@ const FormPage = () => {
 	}, [dispatch, isDebounceActive, formDetail, formDetailData])
 
 	const onUpdateForm = useCallback(() => {
-		if (formDetail) {
-			const errors = validateFormCard(formDetail)
-			if (errors.length === 0) {
-				alert('Улетает запрос на сервак...')
-				dispatch(editableFormDetailActions.setReadonly(true))
-				onCloseConfirmModal()
-			} else {
-				alert(errors[0])
-			}
+		// временная мера
+		const approveValue = "[\"\",\"\",{}]"
+		const validateErrors = validateFormCard(formDetail)
+		dispatch(editableFormDetailActions.validateFormCard(formDetail))
+		const values = JSON.stringify(Object.values(validateErrors))
+		if (formDetail && values === approveValue) {
+			alert('Улетает запрос на сервак...')
+			dispatch(editableFormDetailActions.setReadonly(true))
+			onCloseConfirmModal()
+		} else {
+			onCloseConfirmModal()
 		}
 	}, [dispatch, formDetail])
 	

@@ -3,11 +3,9 @@ import { DynamicModuleLoader, ReducersList } from "shared/lib/components/Dynamic
 import { editableFormDetailActions, editableFormDetailReducer } from "../model/slice/editableFormSlice"
 import { FormDetailCard } from "entities/Form"
 import { useSelector } from "react-redux"
-import { getEditableFormDetailError, getEditableFormDetailForm, getEditableFormDetailIsLoading, getEditableFormDetailReadonly } from "../model/selectors/editableFormSelectors"
+import { getEditableFormDetailError, getEditableFormDetailForm, getEditableFormDetailIsLoading, getEditableFormDetailReadonly, getEditableFormDetailValidateErrors } from "../model/selectors/editableFormSelectors"
 import { useAppDispatch } from "shared/lib/hooks/useAppDispatch"
 import { ChangeInputFieldActionPayload, ChangeRadioFieldActionPayload } from "../model/types/editableForm"
-import { Button, ButtonTheme } from "shared/ui/Button/Button"
-import cls from "./EditableFormDetailCard.module.scss"
 import { AddFormQuestionModal, getAddFormQuestionCount, getAddFormQuestionFieldType, getAddFormQuestionValueType } from "feautures/AddFormQuestion"
 
 const reducers: ReducersList = {
@@ -27,6 +25,7 @@ export const EditableFormDetailCard = memo((props: EditableFormDetailCardProps) 
 	const isLoading = useSelector(getEditableFormDetailIsLoading)
 	const error = useSelector(getEditableFormDetailError)
 	const isReadonly = useSelector(getEditableFormDetailReadonly)
+	const validateErrors = useSelector(getEditableFormDetailValidateErrors)
 	const addFormQuestionCount = useSelector(getAddFormQuestionCount)
 	const addFormQuestionFieldType = useSelector(getAddFormQuestionFieldType)
 	const addFormQuestionValueType = useSelector(getAddFormQuestionValueType)
@@ -105,6 +104,7 @@ export const EditableFormDetailCard = memo((props: EditableFormDetailCardProps) 
 				form={formDetail}
 				isLoading={isLoading}
 				error={error}
+				validateErrors={validateErrors}
 				isReadonly={isReadonly}
 				className={className}
 				onOpenAddForm={onOpenAddForm}

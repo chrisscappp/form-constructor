@@ -4,6 +4,7 @@ export {
   ChangeRadioFieldActionPayload,
   ChangeCheckboxFieldActionPayload,
   ChangeInputFieldType,
+  ValidateErrors
 } from "./model/types/editableForm"
 
 export { 

@@ -100,6 +100,7 @@ const AddFormQuestionForm = (props: AddFormQuestionFormProps) => {
 					/>
 				</div>
 			</div>
+			
 			<div className={cls.body}>
 				<Text
 					text="Выберите тип поля:"
@@ -118,24 +119,26 @@ const AddFormQuestionForm = (props: AddFormQuestionFormProps) => {
 					/>
 				</div>
 			</div>
-			<div className={cls.body}>
-				<Text
-					text="Выберите тип содержимого:"
-					className={cls.countTitle}
-					size={TextSize.ML}
-				/>
-				<div className={cls.questionCount}>
-					<Input
-						value={String(questionValueType?.content)}
-						className={cls.countInput}
+			{questionFieldType?.value === "input" || questionFieldType?.value === "textarea" ? (
+				<div className={cls.body}>
+					<Text
+						text="Выберите тип содержимого:"
+						className={cls.countTitle}
+						size={TextSize.ML}
 					/>
-					<Select
-						value={String(questionValueType?.value)}
-						onChange={onChangeQuestionValueType}
-						options={selectFieldValueTypeOptions}
-					/>
-				</div>
-			</div>
+					<div className={cls.questionCount}>
+						<Input
+							value={String(questionValueType?.content)}
+							className={cls.countInput}
+						/>
+						<Select
+							value={String(questionValueType?.value)}
+							onChange={onChangeQuestionValueType}
+							options={selectFieldValueTypeOptions}
+						/>
+					</div>
+				</div>	
+			) : null}
 			<div className={cls.btns}>
 				<Button
 					className = {cls.btn}
