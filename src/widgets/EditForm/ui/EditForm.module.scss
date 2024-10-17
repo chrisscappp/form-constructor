@@ -1,0 +1,92 @@
+.header {
+	display: flex;
+}
+
+.headerInfo {
+	width: 70%;
+}
+
+.headerAdditional {
+	margin-left: auto;
+}
+
+.count {
+	margin-top: 4px;
+}
+
+.description {
+	margin-top: 6px;
+}
+
+.dateWrapper {
+	display: flex;
+	align-items: center;
+}
+
+.eye,
+.calendar {
+	width: 24px;
+	height: 24px;
+}
+
+.filledWrapper {
+	display: flex;
+	margin-top: 3px;
+	align-items: center;
+}
+
+.filled,
+.date {
+	margin-left: 5px;
+}
+
+.body {
+	margin-top: 20px;
+	width: 50%;
+}
+
+.question {
+	margin-bottom: 24px;
+}
+
+.editableQuestion {
+	margin-bottom: 32px;
+}
+
+.inputTitle {
+	margin-top: 6px;
+}
+
+.inputDescription {
+	margin-top: 6px;
+	width: 70%;
+}
+
+.changeDescription {
+	margin-top: 10px;
+}
+
+.addForm {
+	margin-left: auto;
+	margin-bottom: 12px;
+}
+
+.addFormIcon {
+	width: 32px;
+	height: 32px;
+}
+
+@media (max-width: 1000px) {
+	.header {
+		display: block;
+	}
+	.headerInfo {
+		width: 100%;
+	}
+	.headerAdditional {
+		margin-top: 16px;
+	}
+	.body {
+		width: 100%;
+	}
+}

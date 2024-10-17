@@ -4,7 +4,7 @@ import { FormPage } from "pages/FormPage"
 import { NotFoundPage } from "pages/NotFoundPage"
 import { ProfilePage } from "pages/ProfilePage"
 import { FormCreatePage } from "pages/FormCreatePage"
-import FormEditPage from "pages/FormEditPage/ui/FormEditPage"
+import { FormEditPage } from "pages/FormEditPage"
 
 export enum AppRoutes {
 	MAIN = "main",
@@ -40,7 +40,7 @@ export const routeConfig: Record<AppRoutes, RouteProps> = {
 	},
 	[AppRoutes.FORM_CREATE]: {
 		path: routerPath.form_create,
-		element: <FormCreatePage />,
+		element: <FormEditPage />,
 	},
 	[AppRoutes.FORM_EDIT]: {
 		path: `${routerPath.form_edit}:id`,

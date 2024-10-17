@@ -38,3 +38,19 @@
 .button {
 	margin-left: auto;
 }
+
+@media (max-width: 700px) {
+	.info {
+		width: 100%;
+	}
+	.description {
+		margin-top: 12px;
+	}
+	.footer {
+		display: block;
+	}
+	.button {
+		margin-top: 24px;
+		margin-left: 0;
+	}
+}

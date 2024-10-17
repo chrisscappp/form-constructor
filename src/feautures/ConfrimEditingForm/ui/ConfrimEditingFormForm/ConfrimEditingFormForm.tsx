@@ -9,7 +9,8 @@ import { Form } from "shared/ui/Form/Form"
 export interface ConfirmEditingFormFormProps {
 	className?: string,
 	onClose?: () => void,
-	callback?: () => void
+	callback?: () => void,
+	error?: string
 }
 
 const ConfirmEditingFormForm = (props: ConfirmEditingFormFormProps) => {
@@ -17,7 +18,8 @@ const ConfirmEditingFormForm = (props: ConfirmEditingFormFormProps) => {
 	const {
 		className,
 		onClose,
-		callback
+		callback,
+		error
 	} = props
 
 	const onKeyDown = useCallback((e: KeyboardEvent) => {
@@ -40,7 +42,7 @@ const ConfirmEditingFormForm = (props: ConfirmEditingFormFormProps) => {
 				title = {"Подтвердите действие"}
 				size={TextSize.L}
 			/>
-			{/* {error && <Text text = {error} theme = {TextTheme.ERROR}/>} */}
+			{error && <Text text = {error} theme = {TextTheme.ERROR}/>}
 			<div className={cls.btns}>
 				<Button
 					className = {cls.btn}

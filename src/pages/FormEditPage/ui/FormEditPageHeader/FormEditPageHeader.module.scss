@@ -1,0 +1,18 @@
+.FormPageHeader {
+	display: flex;
+	align-items: center;
+}
+
+.undoBtn {
+	margin-left: auto;
+}
+
+@media (max-width: 550px) {
+	.FormPageHeader {
+		display: block;
+	}
+	.undoBtn {
+		margin-left: 0;
+		margin-top: 12px;
+	}
+}

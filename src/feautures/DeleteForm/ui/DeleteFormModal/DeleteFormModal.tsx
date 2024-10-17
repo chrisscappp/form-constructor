@@ -10,24 +10,32 @@ interface DeleteFormModalProps {
 	className?: string;
 	isOpen: boolean;
 	onClose: () => void;
+	deleteFormId: string
 }
 
 const initialReducers: ReducersList = {
 	deleteForm: deleteFormModalReducer
 }
 
-export const DeleteFormModal = ({ className, isOpen, onClose }: DeleteFormModalProps) => {
+export const DeleteFormModal = (props: DeleteFormModalProps) => {
+	const {
+		deleteFormId,
+		isOpen,
+		onClose,
+		className
+	} = props
 
 	return (
 		<DynamicModuleLoader reducers={initialReducers} removeAfterUnmount>
 			<Modal 
-				className = {classNames("", {}, [className])}
-				isOpen = {isOpen}
-				onClose = {onClose}
+				className={classNames("", {}, [className])}
+				isOpen={isOpen}
+				onClose={onClose}
 			>
 				<Suspense fallback = {<Loader/>}>
 					<DeleteFormFormAsync
-						onClose = {onClose}
+						onClose={onClose}
+						deleteFormId={deleteFormId}
 					/>
 				</Suspense>
 			</Modal>

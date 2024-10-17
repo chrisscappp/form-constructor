@@ -2,12 +2,12 @@ import { FormSimplifyList } from "entities/Form"
 import { memo, useCallback, useEffect, useState } from "react"
 import { DynamicModuleLoader, ReducersList } from "shared/lib/components/DynamicModuleLoader/DynamicModuleLoader"
 import { Page } from "widgets/Page/Page"
-import { formsListActions, formsListReducer } from "../model/slice/formsListSlice"
+import { formsListReducer } from "../model/slice/formsListSlice"
 import { useSelector } from "react-redux"
-import { getFormsListError, getFormsListForms, getFormsListInited, getFormsListIsLoading } from "../model/selectors/mainPageSelectors"
+import { getFormsListError, getFormsListForms, getFormsListIsLoading } from "../model/selectors/mainPageSelectors"
 import { useAppDispatch } from "shared/lib/hooks/useAppDispatch"
-import { DeleteFormModal, getDeleteFormModalDeleteConfirmed } from "feautures/DeleteForm"
-import { getEditableFormDetailReadonly } from "feautures/EditableFormDetailCard/model/selectors/editableFormSelectors"
+import { DeleteFormModal } from "feautures/DeleteForm"
+import { initMainPage } from "../model/services/initMainPage/initMainPage"
 
 const reducers: ReducersList = {
 	forms: formsListReducer
@@ -18,27 +18,22 @@ const MainPage = () => {
 	const forms = useSelector(getFormsListForms)
 	const isLoading = useSelector(getFormsListIsLoading)
 	const error = useSelector(getFormsListError)
-	const inited = useSelector(getFormsListInited)
-	const isDeleteConfirmed = useSelector(getDeleteFormModalDeleteConfirmed)
 	const [isOpenDeleteModal, setIsOpenDeleteModal] = useState(false)
+	const [deleteFormId, setDeleteFormId] = useState("")
 
 	useEffect(() => {
-		if (!inited) {
-			dispatch(formsListActions.initState())
-			// затем вызвать здесь сервис получения форм
-		}
-		if (isDeleteConfirmed) {
-			// подгружаем новый список форм
-		}
-	}, [isDeleteConfirmed])
+		dispatch(initMainPage())
+	}, [])
 
-	const onOpenDeleteModal = useCallback(() => {
+	const onOpenDeleteModal = useCallback((formId: string) => {
 		setIsOpenDeleteModal(true)
-	}, [isOpenDeleteModal])
+		setDeleteFormId(formId)
+	}, [])
 
 	const onCloseDeleteModal = useCallback(() => {
 		setIsOpenDeleteModal(false)
-	}, [isOpenDeleteModal])
+		setDeleteFormId("")
+	}, [])
 
 	return (
 		<DynamicModuleLoader reducers={reducers}>
@@ -53,6 +48,7 @@ const MainPage = () => {
 					<DeleteFormModal
 						isOpen={isOpenDeleteModal}
 						onClose={onCloseDeleteModal}
+						deleteFormId={deleteFormId}
 					/>
 				)}
 			</Page>
