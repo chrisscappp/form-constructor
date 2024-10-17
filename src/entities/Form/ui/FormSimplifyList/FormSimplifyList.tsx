@@ -5,13 +5,14 @@ import { FormSimplify } from "../../model/types/form"
 import { FormSimplifyListItem } from "../FormSimplifyListItem/FormSimplifyListItem"
 import { Loader } from "shared/ui/Loader/Loader"
 import { FormInstrumentPanel } from "../FormInstrumentPanel/FormInstrumentPanel"
+import { Text, TextAlign, TextSize, TextTheme } from "shared/ui/Text/Text"
 
 interface FormSimplifyListProps {
 	className?: string,
 	forms?: FormSimplify[],
 	isLoading?: boolean,
 	error?: string,
-	onOpenModalDelete: () => void
+	onOpenModalDelete: (formId: string) => void
 }
 
 export const FormSimplifyList = memo((props: FormSimplifyListProps) => {
@@ -26,13 +27,13 @@ export const FormSimplifyList = memo((props: FormSimplifyListProps) => {
 
 	const list = useMemo(() => {
 		return forms?.map((item) => (
-			<div className={cls.listItem}>
+			<div className={cls.listItem} key={item.id}>
 				<FormSimplifyListItem
-					key={item.id}
 					form={item}
 					className={cls.form}
 				/>
 				<FormInstrumentPanel
+					formId={item.id}
 					formLink={item.formLink}
 					onOpenModalDelete={onOpenModalDelete}
 					className={cls.panel}
@@ -42,15 +43,19 @@ export const FormSimplifyList = memo((props: FormSimplifyListProps) => {
 	}, [forms])
 
 	if (isLoading) {
-		<div className={classNames(cls.FormSimplifyList, {}, [className])}>
+		return (<div className={classNames(cls.FormSimplifyList, {}, [className])}>
 			<Loader/>
-		</div>
+		</div>)
 	}
 
 	if (error) {
-		<div className={classNames(cls.FormSimplifyList, {}, [className])}>
-			{error}
-		</div>
+		return (<div className={classNames(cls.FormSimplifyList, {}, [className])}>
+			<Text
+				title={error}
+				size={TextSize.L}
+				align={TextAlign.CENTER}
+			/>
+		</div>)
 	}
 
 	return (

@@ -8,10 +8,19 @@ interface ConfirmEditingFormModalProps {
 	className?: string,
 	isOpen: boolean;
 	onClose: () => void,
-	callback: () => void
+	callback: () => void,
+	error?: string
 }
 
-export const ConfirmEditingFormModal = ({ className, isOpen, onClose, callback }: ConfirmEditingFormModalProps) => {
+export const ConfirmEditingFormModal = (props: ConfirmEditingFormModalProps) => {
+
+	const {
+		callback,
+		isOpen,
+		onClose,
+		className,
+		error
+	} = props
 
 	return (
 		<Modal 

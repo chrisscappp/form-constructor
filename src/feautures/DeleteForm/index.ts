@@ -1,5 +1,4 @@
-export { DeleteFormModal } from "./ui/DeleteFormModal/DeleteFormModal"
-
 export { DeleteFormModalSchema } from "./modal/types/deleteForm"
+export { deleteFormModalActions } from "./modal/slice/deleteModalFormSlice"
 
-export { getDeleteFormModalDeleteConfirmed } from "./modal/selectors/getDeleteFormModal"
+export { DeleteFormModal } from "./ui/DeleteFormModal/DeleteFormModal"

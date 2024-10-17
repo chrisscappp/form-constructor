@@ -6,5 +6,6 @@ export {
 	FormSimplify, 
 	FormDetail, 
 	FormQuestionType,
-	FormQuestionValueType
+	FormQuestionValueType,
+	FormQuestion
 } from "./model/types/form"

@@ -10,7 +10,7 @@ export interface FormQuestionAnswer {
 
 export interface FormQuestion {
 	id: number,
-	formId: number,
+	formId: string,
 	title: string,
 	description?: string,
 	type: FormQuestionType,
@@ -22,7 +22,8 @@ export interface FormQuestion {
 // answers - есть если checkbox или radio
 
 export interface FormSimplify {
-	id: number,
+	authorId: number,
+	id: string,
 	title: string,
 	description?: string,
 	date: string,
@@ -31,7 +32,6 @@ export interface FormSimplify {
 }
 
 export interface FormDetail extends FormSimplify {
-	authorId: number,
 	questionCount: number,
 	questions: FormQuestion[]
 }

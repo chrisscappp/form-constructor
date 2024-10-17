@@ -2,13 +2,15 @@ import { AnyAction, ReducersMapObject, Reducer  } from "@reduxjs/toolkit"
 import { AxiosInstance } from "axios"
 import { AddFormQuestionSchema } from "feautures/AddFormQuestion"
 import { DeleteFormModalSchema } from "feautures/DeleteForm"
-import { EditableFormDetailCardSchema } from "feautures/EditableFormDetailCard"
+import { EditFormPageSchema } from "pages/FormEditPage"
 import { FormsListSchema } from "pages/MainPage"
+import { FormPageSchema } from "pages/FormPage"
 
 export interface StateSchema {
 	// async
 	forms?: FormsListSchema,
-	formDetail?: EditableFormDetailCardSchema,
+	formDetail?: FormPageSchema,
+	editForm?: EditFormPageSchema,
 	deleteForm?: DeleteFormModalSchema,
 	addQuestionForm?: AddFormQuestionSchema
 }

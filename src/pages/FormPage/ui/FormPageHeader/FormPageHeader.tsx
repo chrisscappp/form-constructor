@@ -6,26 +6,21 @@ import GoBackArrow from "shared/assets/icons/go-back-arrow.svg"
 import { useNavigate } from "react-router"
 import { routerPath } from "shared/config/routeConfig/routeConfig"
 import { FormInstrumentPanel } from "entities/Form"
-import { Text, TextSize } from "shared/ui/Text/Text"
 
 interface FormPageHeaderProps {
 	className?: string,
-	isReadonly?: boolean,
 	formLink: string,
-	onOpenModalDelete: () => void,
-	onEditForm: () => void,
-	onUndoChanges: () => void
+	formId: string,
+	onOpenModalDelete: () => void
 }
 
 export const FormPageHeader = memo((props: FormPageHeaderProps) => {
 
 	const {
 		className,
-		isReadonly,
 		formLink,
-		onOpenModalDelete,
-		onEditForm,
-		onUndoChanges
+		formId,
+		onOpenModalDelete
 	} = props
 
 	const navigate = useNavigate()
@@ -33,24 +28,6 @@ export const FormPageHeader = memo((props: FormPageHeaderProps) => {
 	const onOpenFormsList = useCallback(() => {
 		navigate(routerPath.main)
 	}, [])
-
-	if (!isReadonly) {
-		return (
-			<div className={classNames(cls.FormPageHeader, {}, [className, cls.editPanel])}>
-				<Text
-					title="Редактирование"
-					size={TextSize.XL}
-				/>
-				<Button 
-					theme={ButtonTheme.ERROR}
-					className={cls.undoBtn}
-					onClick={onUndoChanges}
-				>
-					Отменить изменения
-				</Button>
-			</div>
-		)
-	}
 
 	return (
     	<div className={classNames(cls.FormPageHeader, {}, [className])}>
@@ -64,8 +41,8 @@ export const FormPageHeader = memo((props: FormPageHeaderProps) => {
 			<FormInstrumentPanel
 				className={cls.panel}
 				formLink={formLink}
+				formId={formId}
 				onOpenModalDelete={onOpenModalDelete}
-				onEditForm={onEditForm}
 			/>
     	</div>
   	)

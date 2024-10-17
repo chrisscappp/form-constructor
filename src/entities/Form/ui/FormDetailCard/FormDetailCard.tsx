@@ -3,43 +3,19 @@ import { FormDetail, FormQuestion } from "../../model/types/form"
 import { memo, useCallback } from "react"
 import { classNames } from "shared/lib/classNames/classNames"
 import cls from "./FormDetailCard.module.scss"
-import { Text, TextSize, TextTheme } from "shared/ui/Text/Text"
+import { Text, TextAlign, TextSize } from "shared/ui/Text/Text"
 import CalendarIcon from "shared/assets/icons/calendar-icon.svg"
 import EyeIcon from "shared/assets/icons/eye-icon.svg"
 import { FormDetailCardInput } from "../FormDetailCardInput/FormDetailCardInput"
 import { FormDetailCardTextarea } from "../FormDetailCardTextarea/FormDetailCardTextarea"
 import { FormDetailCardRadio } from "../FormDetailCardRadio/FormDetailCardRadio"
 import { FormDetailCardCheckbox } from "../FormDetailCardCheckbox/FormDetailCardCheckbox"
-import { EditableFormDetailCardInput } from "../EditableFormDetailCardInput/EditableFormDetailCardInput"
-import { EditableFormDetailCardRadio } from "../EditableFormDetailCardRadio/EditableFormDetailCardRadio"
-import { ChangeInputFieldActionPayload, ChangeRadioFieldActionPayload } from "feautures/EditableFormDetailCard"
-import { Button, ButtonTheme } from "shared/ui/Button/Button"
-import { Input } from "shared/ui/Input/Input"
-import AddFormIcon from "shared/assets/icons/add__to__list-icon.svg"
-import { ValidateErrors } from "feautures/EditableFormDetailCard"
-import { QuestionError, ValidateFormErrors } from "feautures/EditableFormDetailCard/model/types/editableForm"
 
 interface FormDetailCardProps {
 	form?: FormDetail,
 	isLoading?: boolean,
 	error?: string,
-	validateErrors?: ValidateErrors,
 	className?: string,
-	isReadonly?: boolean,
-	onOpenAddForm?: () => void,
-	onChangeFormTitle?: (value: string) => void,
-	onChangeFormDescription?: (value: string) => void,
-	onChangeInputField?: (data: ChangeInputFieldActionPayload) => void,
-	onAddRadioField?: (qIndex: number) => void,
-	onAddCheckboxField?: (qIndex: number) => void,
-	onDeleteAnswerField?: (qIndex: number, aIndex: number) => void,
-	onChangeRadioField?: (data: ChangeRadioFieldActionPayload) => void,
-	onUndoChangesForQuestion?: (qId: number, qIndex: number) => void,
-	onDeleteQuestion?: (qIndex: number) => void
-}
-
-const validateErrorsTranslate = {
-	[ValidateFormErrors.EMPTY_TITLE]: "Название формы должно быть заполнено!"
 }
 
 export const FormDetailCard = memo((props: FormDetailCardProps) => {
@@ -48,21 +24,10 @@ export const FormDetailCard = memo((props: FormDetailCardProps) => {
 		className,
 		error,
 		form,
-		isLoading,
-		isReadonly,
-		validateErrors,
-		onOpenAddForm,
-		onChangeFormTitle,
-		onChangeFormDescription,
-		onChangeInputField,
-		onAddRadioField,
-		onDeleteAnswerField,
-		onChangeRadioField,
-		onUndoChangesForQuestion,
-		onDeleteQuestion
+		isLoading
 	} = props
 
-	const renderReadonlyBlock = useCallback((question: FormQuestion) => {
+	const renderQuestionBlock = useCallback((question: FormQuestion) => {
 		switch(question.type) {
 			case "input": 
 				return <FormDetailCardInput key={question.id} className={cls.question} question={question}/>
@@ -77,119 +42,33 @@ export const FormDetailCard = memo((props: FormDetailCardProps) => {
 		}
 	}, [])
 
-	const renderEditableBlock = useCallback((question: FormQuestion, qIndex: number) => {
-		//@ts-ignore
-		const errors: QuestionError = validateErrors?.questions[qIndex]
-		switch(question.type) {
-			case "input": 
-				return <EditableFormDetailCardInput 
-					key={question.id}
-					className={cls.editableQuestion} 
-					question={question}
-					qIndex={qIndex}
-					validateErrors={errors}
-					onChangeInputField={onChangeInputField}
-					onUndoChangesForQuestion={onUndoChangesForQuestion}
-					onDeleteQuestion={onDeleteQuestion}
-				/>
-			case "textarea": 
-				return <EditableFormDetailCardInput 
-					key={question.id}
-					className={cls.editableQuestion} 
-					question={question}
-					qIndex={qIndex}
-					validateErrors={errors}
-					onChangeInputField={onChangeInputField}
-					onUndoChangesForQuestion={onUndoChangesForQuestion}
-					onDeleteQuestion={onDeleteQuestion}
-				/>
-			case "radio": 
-				return <EditableFormDetailCardRadio 
-					key={question.id}
-					className={cls.editableQuestion} 
-					question={question}
-					qIndex={qIndex}
-					validateErrors={errors}
-					onAddRadioField={onAddRadioField}
-					onDeleteAnswerField={onDeleteAnswerField}
-					onChangeRadioField={onChangeRadioField}
-					onUndoChangesForQuestion={onUndoChangesForQuestion}
-					onDeleteQuestion={onDeleteQuestion}
-				/>
-			case "checkbox":
-				return <EditableFormDetailCardRadio 
-					key={question.id}
-					className={cls.editableQuestion} 
-					question={question}
-					qIndex={qIndex}
-					validateErrors={errors}
-					onAddRadioField={onAddRadioField}
-					onDeleteAnswerField={onDeleteAnswerField}
-					onChangeRadioField={onChangeRadioField}
-					onUndoChangesForQuestion={onUndoChangesForQuestion}
-					onDeleteQuestion={onDeleteQuestion}
-				/>
-			default:
-				return null
-		}
-	}, [validateErrors])
-
 	if (isLoading) {
-		<Card className={classNames(cls.FormCard, {}, [className])}>
+		return (<Card className={classNames(cls.FormCard, {}, [className])}>
 			<div>loading</div>
-		</Card>
+		</Card>)
 	}
 
 	if (error) {
-		<Card className={classNames(cls.FormCard, {}, [className])}>
-			{error}
-		</Card>
+		return (<div className={classNames(cls.error, {}, [className])}>
+			<Text
+				title={error}
+				align={TextAlign.CENTER}
+				size={TextSize.L}
+			/>
+		</div>)
 	}
 
 	return (
 		<Card className={classNames(cls.FormCard, {}, [className])}>
 			<div className={cls.header}>
 				<div className={cls.headerInfo}>
-					{isReadonly ? <Text title={form?.title} size={TextSize.XL} /> : (
-						<>
-							<Text
-								title={'Название формы:'}
-								size={TextSize.L}
-							/>
-							<Input
-								className={cls.inputTitle}
-								onChange={onChangeFormTitle}
-								value={form?.title ?? ''}
-								placeholder='Введите название формы...'
-							/>
-						</>
-					)}
-					{validateErrors?.title && (
-						<Text 
-							theme={TextTheme.ERROR} 
-							text={validateErrorsTranslate[validateErrors.title]}
-							className={cls.error}
-						/>
-					)}
-					{form?.description && isReadonly ? (
+					<Text title={form?.title} size={TextSize.XL} />
+					{form?.description && (
           				<Text
             				text={form?.description}
             				size={TextSize.L}
             				className={cls.description}
           				/>
-        			) : (
-						<div className={cls.changeDescription}>
-							<Text
-								title={'Короткое описание:'}
-								size={TextSize.L}
-							/>
-							<Input
-								className={cls.inputDescription}
-								onChange={onChangeFormDescription}
-								value={form?.description ?? ''}
-								placeholder='Введите короткое описание для формы...'
-							/>
-						</div>
 					)}
 				</div>
 				<div className={cls.headerAdditional}>
@@ -214,18 +93,8 @@ export const FormDetailCard = memo((props: FormDetailCardProps) => {
 				</div>
 			</div>
 			<div className={cls.body}>
-				{form?.questions.map((question, index) => 
-					isReadonly ? renderReadonlyBlock(question) : renderEditableBlock(question, index)
-				)}
-				{!isReadonly && (
-					<Button 
-						onClick={onOpenAddForm} 
-						theme={ButtonTheme.CLEAR}
-						className={cls.addForm}
-						title="Добавить вопрос"
-					>
-						<AddFormIcon className={cls.addFormIcon}/>
-					</Button>
+				{form?.questions.map((question) => 
+					renderQuestionBlock(question)
 				)}	
 			</div>
 		</Card>

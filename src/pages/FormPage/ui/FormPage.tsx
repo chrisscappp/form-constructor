@@ -1,124 +1,67 @@
 import { memo, useCallback, useEffect, useState } from "react"
-import { useNavigate, useParams } from "react-router"
+import { useParams } from "react-router"
 import { Page } from "widgets/Page/Page"
 import { useSelector } from "react-redux"
 import { FormPageHeader } from "./FormPageHeader/FormPageHeader"
 import cls from "./FormPage.module.scss"
-import { DeleteFormModal, getDeleteFormModalDeleteConfirmed } from "feautures/DeleteForm"
-import { 
-	EditableFormDetailCard, 
-	getEditableFormDetailForm, 
-	getEditableFormDetailFormData,
-	editableFormDetailActions,
-	getEditableFormDetailReadonly,
-	getEditableFormDetailIsDebounceActive
-} from "feautures/EditableFormDetailCard"
+import { DeleteFormModal } from "feautures/DeleteForm"
+import { FormDetailCard } from "entities/Form"
+import { getFormPageError, getFormPageForm, getFormPageIsLoading } from "../model/selectors/formPageSelectors"
+import { DynamicModuleLoader, ReducersList } from "shared/lib/components/DynamicModuleLoader/DynamicModuleLoader"
+import { formDetailReducer } from "../model/slice/formPageSlice"
 import { useAppDispatch } from "shared/lib/hooks/useAppDispatch"
-import { ConfirmEditingFormModal } from "feautures/ConfrimEditingForm"
-import { deepEqualObject } from "shared/lib/functions/deepEqualObject/deepEqualObject"
-import { FormPageFooter } from "./FormPageFooter/FormPageFooter"
-import { validateFormCard } from "feautures/EditableFormDetailCard"
+import { fetchFormDetail } from "../model/services/fetchFormDetail/fetchFormDetail"
+
+const reducers: ReducersList = {
+	formDetail: formDetailReducer
+}
 
 const FormPage = () => {
 
 	const { id } = useParams<{id: string}>()
-	const navigate = useNavigate()
-	const dispatch = useAppDispatch()
-	const formDetail = useSelector(getEditableFormDetailForm)
-	const formDetailData = useSelector(getEditableFormDetailFormData)
-	const isDeleteConfirmed = useSelector(getDeleteFormModalDeleteConfirmed)
-	const isReadonly = useSelector(getEditableFormDetailReadonly)
-	const isDebounceActive = useSelector(getEditableFormDetailIsDebounceActive)
+	const dispath = useAppDispatch()
+	const form = useSelector(getFormPageForm)
+	const isLoading = useSelector(getFormPageIsLoading)
+	const error = useSelector(getFormPageError)
 	const [isOpenDeleteModal, setIsOpenDeleteModal] = useState(false)
-	const [isOpenCofirmModal, setIsOpenConfirmModal] = useState(false)
 	
 	useEffect(() => {
-		if (isDeleteConfirmed) {
-			navigate("/")
-		}
-	}, [isDeleteConfirmed])
+		dispath(fetchFormDetail({ id: id ?? "0" }))
+	}, [])
 
 	const onOpenDeleteModal = useCallback(() => {
 		setIsOpenDeleteModal(true)
-	}, [isOpenDeleteModal])
+	}, [])
 
 	const onCloseDeleteModal = useCallback(() => {
 		setIsOpenDeleteModal(false)
-	}, [isOpenDeleteModal])
+	}, [])
 
-	const onOpenConfirmModal = useCallback(() => {
-		setIsOpenConfirmModal(true)
-	}, [isOpenDeleteModal])
-
-	const onCloseConfirmModal = useCallback(() => {
-		setIsOpenConfirmModal(false)
-	}, [isOpenDeleteModal])
-
-	const onEditFormDetailCard = useCallback(() => {
-		dispatch(editableFormDetailActions.setReadonly(false))
-	}, [dispatch])
-
-	const onUndoChangesForForm = useCallback(() => {
-		dispatch(editableFormDetailActions.undoChangesForForm())
-	}, [dispatch])
-
-	const onCheckIdentityForm = useCallback(() => {
-		if (!isDebounceActive) {
-			if (deepEqualObject(formDetail, formDetailData)) {
-				dispatch(editableFormDetailActions.setReadonly(true))
-			} else {
-				onOpenConfirmModal()
-			}
-		}
-	}, [dispatch, isDebounceActive, formDetail, formDetailData])
-
-	const onUpdateForm = useCallback(() => {
-		// временная мера
-		const approveValue = "[\"\",\"\",{}]"
-		const validateErrors = validateFormCard(formDetail)
-		dispatch(editableFormDetailActions.validateFormCard(formDetail))
-		const values = JSON.stringify(Object.values(validateErrors))
-		if (formDetail && values === approveValue) {
-			alert('Улетает запрос на сервак...')
-			dispatch(editableFormDetailActions.setReadonly(true))
-			onCloseConfirmModal()
-		} else {
-			onCloseConfirmModal()
-		}
-	}, [dispatch, formDetail])
-	
 	return (
+		<DynamicModuleLoader reducers={reducers} removeAfterUnmount>
 			<Page className={cls.page}>
-				<FormPageHeader
-					isReadonly={isReadonly}
-					formLink={formDetail?.formLink || ""}
-					onOpenModalDelete={onOpenDeleteModal}
-					onEditForm={onEditFormDetailCard}
-					onUndoChanges={onUndoChangesForForm}
-				/>
-				<EditableFormDetailCard
+				{!error && (
+					<FormPageHeader
+						formLink={form?.formLink || ""}
+						formId={form?.id ?? ""}
+						onOpenModalDelete={onOpenDeleteModal}
+					/>
+				)}
+				<FormDetailCard
 					className={cls.form}
-				/>
-				<FormPageFooter
-					className={cls.footer}
-					onUndoChanges={onUndoChangesForForm}
-					onCheckIdentityForm={onCheckIdentityForm}
-					isReadonly={isReadonly}
+					form={form}
+					isLoading={isLoading}
+					error={error}
 				/>
 				{isOpenDeleteModal && (
 					<DeleteFormModal
 						isOpen={isOpenDeleteModal}
 						onClose={onCloseDeleteModal}
-					/>
-				)}
-				{isOpenCofirmModal && (
-					<ConfirmEditingFormModal
-						isOpen={isOpenCofirmModal}
-						onClose={onCloseConfirmModal}
-						callback={onUpdateForm}
+						deleteFormId={form?.id ?? ""}
 					/>
 				)}
 			</Page>
+		</DynamicModuleLoader>
 	)
 }
 

@@ -6,3 +6,4 @@ export {
 
 export { formsListActions } from "./model/slice/formsListSlice"
 export { FormsListSchema } from "./model/types/forms"
+export { fetchFormsList } from "./model/services/fetchFormsList/fetchFormsList"
