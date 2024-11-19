@@ -10,6 +10,7 @@ import { FormDetailCardInput } from "../FormDetailCardInput/FormDetailCardInput"
 import { FormDetailCardTextarea } from "../FormDetailCardTextarea/FormDetailCardTextarea"
 import { FormDetailCardRadio } from "../FormDetailCardRadio/FormDetailCardRadio"
 import { FormDetailCardCheckbox } from "../FormDetailCardCheckbox/FormDetailCardCheckbox"
+import { Loader } from "shared/ui/Loader/Loader"
 
 interface FormDetailCardProps {
 	form?: FormDetail,
@@ -43,8 +44,8 @@ export const FormDetailCard = memo((props: FormDetailCardProps) => {
 	}, [])
 
 	if (isLoading) {
-		return (<Card className={classNames(cls.FormCard, {}, [className])}>
-			<div>loading</div>
+		return (<Card className={classNames(cls.loaderWrap, {}, [className])}>
+			<Loader/>
 		</Card>)
 	}
 

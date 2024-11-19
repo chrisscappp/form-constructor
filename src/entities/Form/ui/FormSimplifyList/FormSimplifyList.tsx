@@ -43,13 +43,13 @@ export const FormSimplifyList = memo((props: FormSimplifyListProps) => {
 	}, [forms])
 
 	if (isLoading) {
-		return (<div className={classNames(cls.FormSimplifyList, {}, [className])}>
+		return (<div className={classNames(cls.loaderWrap, {}, [className])}>
 			<Loader/>
 		</div>)
 	}
 
 	if (error) {
-		return (<div className={classNames(cls.FormSimplifyList, {}, [className])}>
+		return (<div className={classNames('', {}, [className])}>
 			<Text
 				title={error}
 				size={TextSize.L}

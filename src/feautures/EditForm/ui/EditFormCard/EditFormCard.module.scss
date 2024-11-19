@@ -1,7 +1,7 @@
 .loaderWrap {
 	display: flex;
 	justify-content: center;
-	padding: 50px;
+	padding: 50px !important;
 }
 
 .header {
@@ -82,23 +82,19 @@
 	height: 32px;
 }
 
-.error {
-	margin-top: 6px;
-}
-
 @media (max-width: 1000px) {
 	.header {
 		display: block;
 	}
+
 	.headerInfo {
 		width: 100%;
 	}
+
 	.headerAdditional {
-		margin-top: 24px;
+		margin-top: 16px;
 	}
-	.description {
-		margin-top: 12px;
-	}
+
 	.body {
 		width: 100%;
 	}
