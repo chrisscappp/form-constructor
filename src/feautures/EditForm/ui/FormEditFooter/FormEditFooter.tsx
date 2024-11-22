@@ -2,6 +2,7 @@ import { memo } from "react"
 import { classNames } from "shared/lib/classNames/classNames"
 import cls from "./FormEditFooter.module.scss"
 import { Button, ButtonTheme } from "shared/ui/Button/Button"
+import { HStack } from "shared/ui/Stack"
 
 interface FormFooterProps {
 	className?: string,
@@ -18,22 +19,20 @@ export const FormEditFooter = memo((props: FormFooterProps) => {
 	} = props
 	
 	return (
-		<div className={classNames(cls.FormEditFooter, {}, [className])}>
-			<div className={cls.saveEdit}>
-				<Button
-					theme={ButtonTheme.APPROVE} 
-					onClick={onFormAction}
-				>
-					Сохранить изменения
-				</Button>
-				<Button 
-					theme={ButtonTheme.ERROR}
-					className={cls.undoBtn}
-					onClick={onUndoChanges}
-				>
-					Отменить изменения
-				</Button>
-			</div>
-		</div>
+		<HStack className={classNames('', {}, [className])}>
+			<Button
+				theme={ButtonTheme.APPROVE} 
+				onClick={onFormAction}
+			>
+				Сохранить изменения
+			</Button>
+			<Button 
+				theme={ButtonTheme.ERROR}
+				className={cls.undoBtn}
+				onClick={onUndoChanges}
+			>
+				Отменить изменения
+			</Button>
+		</HStack>
 	)
 })

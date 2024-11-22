@@ -8,6 +8,7 @@ import LinkIcon from "shared/assets/icons/link-icon.svg"
 import { Button, ButtonTheme } from "shared/ui/Button/Button"
 import { useNavigate } from "react-router"
 import { routerPath } from "shared/config/routeConfig/routeConfig"
+import { HStack } from "shared/ui/Stack"
 
 interface FormInstrumentPanelProps {
 	className?: string,
@@ -39,6 +40,7 @@ export const FormInstrumentPanel = memo((props: FormInstrumentPanelProps) => {
 	
 	return (
     <Card className={classNames(cls.FormInstrumentPanel, {}, [className])}>
+      <HStack justify="around" className={cls.panel}>
         <Button
           title="Редактировать"
           theme={ButtonTheme.CLEAR}
@@ -63,6 +65,7 @@ export const FormInstrumentPanel = memo((props: FormInstrumentPanelProps) => {
         >
           <TrashIcon className={cls.icon} />
         </Button>
+      </HStack>
     </Card>
-  )
+  );
 })

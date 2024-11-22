@@ -3,6 +3,7 @@ import { classNames } from "shared/lib/classNames/classNames"
 import { Button, ButtonTheme } from "shared/ui/Button/Button"
 import { Text, TextSize } from "shared/ui/Text/Text"
 import cls from "./FormEditPageHeader.module.scss"
+import { HStack } from "shared/ui/Stack"
 
 interface FormEditPageHeaderProps {
 	className?: string,
@@ -19,7 +20,11 @@ export const FormEditPageHeader = memo((props: FormEditPageHeaderProps) => {
 	} = props
 
 	return (
-		<div className={classNames(cls.FormPageHeader, {}, [className, cls.editPanel])}>
+		<HStack 
+			className={classNames(cls.FormPageHeader, {}, [className])}
+			justify="between"
+			max
+		>
 			<Text
 				title={isCreateFormRoute ? "Новая форма" : "Редактирование"}
 				size={TextSize.XL}
@@ -31,6 +36,6 @@ export const FormEditPageHeader = memo((props: FormEditPageHeaderProps) => {
 			>
 				{isCreateFormRoute ? "Отменить" : "Отменить изменения"}
 			</Button>
-		</div>
+		</HStack>
 	)
 })

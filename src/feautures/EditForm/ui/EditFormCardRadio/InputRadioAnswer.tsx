@@ -4,6 +4,7 @@ import { Button, ButtonSize } from "shared/ui/Button/Button"
 import { classNames } from "shared/lib/classNames/classNames"
 import { Input } from "shared/ui/Input/Input"
 import { FormQuestionAnswer } from "entities/Form/model/types/form"
+import { HStack } from "shared/ui/Stack"
 
 interface InputRadioAnswerProps {
 	className?: string,
@@ -34,7 +35,11 @@ export const InputRadioAnswer = memo((props: InputRadioAnswerProps) => {
 	}, [])
 	
 	return (
-		<div className={classNames(cls.answer, {}, [className])}>
+		<HStack 
+			className={classNames('', {}, [className])}
+			gap="8"
+			max
+		>
 			<Button 
 				size={ButtonSize.L} 
 				square 
@@ -46,11 +51,10 @@ export const InputRadioAnswer = memo((props: InputRadioAnswerProps) => {
 			</Button>
 			<Input
 				placeholder="Введите содержание вопроса..."
-				className={cls.inputAnswer}
 				value={radioValue}
 				onChange={onChangeValue}
 				onBlur={() => onChangeContent(radioValue, aIndex)}
 			/>
-		</div>
+		</HStack>
 	)
 })

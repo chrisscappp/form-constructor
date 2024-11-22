@@ -5,7 +5,6 @@ import { ChangeInputFieldActionPayload, ChangeRadioFieldActionPayload } from "..
 import { editFormActions, editFormReducer } from "../../model/slice/editFormSlice"
 import { useSelector } from "react-redux"
 import { AddFormQuestionModal, getAddFormQuestionCount, getAddFormQuestionFieldType, getAddFormQuestionValueType } from "feautures/AddFormQuestion"
-import cls from "./EditForm.module.scss"
 import { DynamicModuleLoader, ReducersList } from "shared/lib/components/DynamicModuleLoader/DynamicModuleLoader"
 import { FormEditFooter } from "../FormEditFooter/FormEditFooter"
 import { deepEqualObject } from "shared/lib/functions/deepEqualObject/deepEqualObject"
@@ -128,36 +127,32 @@ const EditForm = ({ formId, isCreateFormRoute, onOpenConfirmModal, onUndoChanges
 	
 	return (
 		<DynamicModuleLoader reducers={reducers} removeAfterUnmount>
-			<div>
-				<EditFormCard
-					className={cls.form}
-					form={formDetail}
-					error={error}
-					isLoading={isLoading}
-					onAddRadioField={onAddRadioField}
-					onChangeFormDescription={onChangeFormDescription}
-					onChangeFormTitle={onChangeFormTitle}
-					onChangeInputField={onChangeInputField}
-					onChangeRadioField={onChangeRadioField}
-					onDeleteAnswerField={onDeleteAnswerField}
-					onDeleteQuestion={onDeleteQuestion}
-					onOpenAddForm={onOpenAddForm}
-					onUndoChangesForQuestion={onUndoChangesForQuestion}
-					validateErrors={validateErrors}
+			<EditFormCard
+				form={formDetail}
+				error={error}
+				isLoading={isLoading}
+				onAddRadioField={onAddRadioField}
+				onChangeFormDescription={onChangeFormDescription}
+				onChangeFormTitle={onChangeFormTitle}
+				onChangeInputField={onChangeInputField}
+				onChangeRadioField={onChangeRadioField}
+				onDeleteAnswerField={onDeleteAnswerField}
+				onDeleteQuestion={onDeleteQuestion}
+				onOpenAddForm={onOpenAddForm}
+				onUndoChangesForQuestion={onUndoChangesForQuestion}
+				validateErrors={validateErrors}
+			/>
+			<FormEditFooter
+				onUndoChanges={onUndoChanges}
+				onFormAction={isCreateFormRoute ? onCreateForm : onCheckIdentityForm}
+			/>
+			{isOpenAddForm && (
+				<AddFormQuestionModal
+					isOpen={isOpenAddForm}
+					onAddQuestion={onAddQuestion}
+					onClose={onCloseAddForm}
 				/>
-				<FormEditFooter
-					className={cls.footer}
-					onUndoChanges={onUndoChanges}
-					onFormAction={isCreateFormRoute ? onCreateForm : onCheckIdentityForm}
-				/>
-				{isOpenAddForm && (
-					<AddFormQuestionModal
-						isOpen={isOpenAddForm}
-						onAddQuestion={onAddQuestion}
-						onClose={onCloseAddForm}
-					/>
-				)}
-			</div>
+			)}
 		</DynamicModuleLoader>
 	)
 }

@@ -6,6 +6,7 @@ import GoBackArrow from "shared/assets/icons/go-back-arrow.svg"
 import { useNavigate } from "react-router"
 import { routerPath } from "shared/config/routeConfig/routeConfig"
 import { FormInstrumentPanel } from "entities/Form"
+import { HStack } from "shared/ui/Stack"
 
 interface FormPageHeaderProps {
 	className?: string,
@@ -30,7 +31,11 @@ export const FormPageHeader = memo((props: FormPageHeaderProps) => {
 	}, [])
 
 	return (
-    	<div className={classNames(cls.FormPageHeader, {}, [className])}>
+    	<HStack 
+			className={className}
+			justify="between"
+			max
+		>
       		<Button
         		onClick={onOpenFormsList}
         		theme={ButtonTheme.CLEAR}
@@ -44,6 +49,6 @@ export const FormPageHeader = memo((props: FormPageHeaderProps) => {
 				formId={formId}
 				onOpenModalDelete={onOpenModalDelete}
 			/>
-    	</div>
+    	</HStack>
   	)
 })

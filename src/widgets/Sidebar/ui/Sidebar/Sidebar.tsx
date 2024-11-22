@@ -4,6 +4,7 @@ import { memo, useMemo } from "react"
 import { sidebarItemList } from "widgets/Sidebar/model/items"
 import { SidebarItem } from "../SidebarItem/SidebarItem"
 import { Portal } from "shared/ui/Portal/Portal"
+import { VStack } from "shared/ui/Stack"
 
 interface SidebarProps {
   className?: string;
@@ -25,11 +26,13 @@ export const Sidebar = memo((props: SidebarProps) => {
 	return (
 		<Portal>
 			<div className={classNames(cls.SidebarWrapper, {}, [className])} onClick={onCollapsed}>
-				<div
+				<VStack
 					className={cls.SidebarContent}
+					gap="20"
+					justify="start"
 				>
 					{routes}
-				</div>
+				</VStack>
 			</div>
 		</Portal>
 	)

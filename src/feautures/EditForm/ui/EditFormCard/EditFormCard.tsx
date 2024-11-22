@@ -18,6 +18,7 @@ import EyeIcon from "shared/assets/icons/eye-icon.svg"
 import AddFormIcon from "shared/assets/icons/add__to__list-icon.svg"
 import { Button, ButtonTheme } from "shared/ui/Button/Button"
 import { Loader } from "shared/ui/Loader/Loader"
+import { HStack, VStack } from "shared/ui/Stack"
 
 interface EditFormCardProps {
 	form?: FormDetail,
@@ -112,6 +113,19 @@ export const EditFormCard = memo((props: EditFormCardProps) => {
 					onUndoChangesForQuestion={onUndoChangesForQuestion}
 					onDeleteQuestion={onDeleteQuestion}
 				/>
+			case "listbox": 
+				return <EditFormCardRadio 
+					key={question.id}
+					className={cls.editableQuestion} 
+					question={question}
+					qIndex={qIndex}
+					validateErrors={errors}
+					onAddRadioField={onAddRadioField}
+					onDeleteAnswerField={onDeleteAnswerField}
+					onChangeRadioField={onChangeRadioField}
+					onUndoChangesForQuestion={onUndoChangesForQuestion}
+					onDeleteQuestion={onDeleteQuestion}
+				/>
 			default:
 				return null
 		}
@@ -127,60 +141,57 @@ export const EditFormCard = memo((props: EditFormCardProps) => {
 
 	return (
 		<Card className={classNames(cls.EditForm, {}, [className])}>
-			<div className={cls.header}>
-				<div className={cls.headerInfo}>
-					<Text
-						title={'Название формы:'}
-						size={TextSize.L}
-					/>
-					<Input
-						className={cls.inputTitle}
-						onChange={onChangeFormTitle}
-						value={form?.title ?? ''}
-						placeholder='Введите название формы...'
-					/>
-					{validateErrors?.title && (
-						<Text 
-							theme={TextTheme.ERROR} 
-							text={validateErrorsTranslate[validateErrors.title]}
-							className={cls.error}
+			<HStack className={cls.header} align="start" justify="between">
+				<VStack className={cls.headerInfo} max gap="12">
+					<VStack max gap="4">
+						<Text
+							title={'Название формы:'}
+							size={TextSize.L}
 						/>
-					)}
-					<div className={cls.changeDescription}>
+						{validateErrors?.title && (
+							<Text 
+								theme={TextTheme.ERROR} 
+								text={validateErrorsTranslate[validateErrors.title]}
+							/>
+						)}
+						<Input
+							onChange={onChangeFormTitle}
+							value={form?.title ?? ''}
+							placeholder='Введите название формы...'
+						/>
+					</VStack>
+					<VStack max gap="4">
 						<Text
 							title={'Короткое описание:'}
 							size={TextSize.L}
 						/>
 						<Input
-							className={cls.inputDescription}
 							onChange={onChangeFormDescription}
 							value={form?.description ?? ''}
 							placeholder='Введите короткое описание для формы...'
 						/>
-					</div>
-				</div>
-				<div className={cls.headerAdditional}>
-					<div className={cls.dateWrapper}>
-            			<CalendarIcon className={cls.calendar} />
-            			<Text text={form?.date} className={cls.date} />
-          			</div>
-          			<div className={cls.filledWrapper}>
+					</VStack>
+				</VStack>
+				<VStack className={cls.headerAdditional} gap="4">
+					<HStack gap="4">
+            			<CalendarIcon className={cls.calendar}/>
+            			<Text text={form?.date}/>
+          			</HStack>
+          			<HStack gap="4">
             			<EyeIcon className={cls.eye} />
-            			<Text text={String(form?.filled || 0)} className={cls.filled} />
-          			</div>
+            			<Text text={String(form?.filled || 0)}/>
+          			</HStack>
 					<Text
-						className={cls.count}
 						text={`Количество вопросов: ${form?.questionCount || 0}`}
 						size={TextSize.M}
 					/>
 					<Text
-						className={cls.count}
 						text={`ID: ${form?.id || 0}`}
 						size={TextSize.M}
 					/>
-				</div>
-			</div>
-			<div className={cls.body}>
+				</VStack>
+			</HStack>
+			<VStack className={cls.questions} gap="20">
 				{form?.questions.map((question, index) => 
 					renderEditableBlock(question, index)
 				)}
@@ -198,7 +209,7 @@ export const EditFormCard = memo((props: EditFormCardProps) => {
 				>
 					<AddFormIcon className={cls.addFormIcon}/>
 				</Button>	
-			</div>
+			</VStack>
 			{error && (
 				<Text
 					text={error}

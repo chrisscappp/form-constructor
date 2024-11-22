@@ -31,6 +31,9 @@ const addFormQuestionModalSlice = createSlice({
 				case "textarea": 
 					state.questionFieldType.content = "Большое поле ввода"
 					break
+				case "listbox": 
+					state.questionFieldType.content = "Выпадающий список"
+					break
 				default:
 					state.questionFieldType.content = ""
 			}

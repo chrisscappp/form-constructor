@@ -9,6 +9,8 @@ import { Button, ButtonSize } from "shared/ui/Button/Button"
 import UndoIcon from "shared/assets/icons/go-back-arrow.svg"
 import RemoveIcon from "shared/assets/icons/trash-icon.svg"
 import { TextArea } from "shared/ui/Textarea/Textarea"
+import { fieldTypeTranslate } from "../../model/consts/fieldTypeTranslate"
+import { HStack, VStack } from "shared/ui/Stack"
 
 interface EditFormCardInputProps {
 	className?: string,
@@ -84,13 +86,14 @@ export const EditFormCardInput = memo((props: EditFormCardInputProps) => {
 	}, [title, description, placeholder, qIndex, onChangeInputField])
 
 	return (
-    	<div
+    	<VStack
       		className={classNames(cls.EditableFormDetailCardInput, {}, [className])}
+			gap="8"
+			max
     	>
-      		<hr className={cls.line}/>
-      		<div className={cls.questionHeader}>
-        		<Text title={`Вопрос №${qIndex + 1} | ${question?.type}`} size={TextSize.ML} />
-        		<div className={cls.questionPanel}>
+      		<HStack justify="between" max>
+        		<Text title={`Вопрос №${qIndex + 1} | ${fieldTypeTranslate[question?.type || 'input']}`} size={TextSize.ML} />
+        		<HStack gap="4">
           			<Button
             			title="Отменить изменения"
             			size={ButtonSize.L}
@@ -104,58 +107,59 @@ export const EditFormCardInput = memo((props: EditFormCardInputProps) => {
             			title="Удалить вопрос"
             			size={ButtonSize.L}
             			square
-            			className={classNames(cls.btn, {}, [cls.removeBtn])}
+            			className={cls.btn}
             			onClick={() => onDeleteQuestion?.(qIndex)}
           			>
             			<RemoveIcon className={cls.icon} />
           			</Button>
-        		</div>
-      		</div>
-      		<Text title={"Заголовок:"} size={TextSize.M} className={cls.hint} />
-      		<Input
-        		value={title}
-        		placeholder="Введите название вопроса..."
-        		className={cls.input}
-				onChange={onChangeTitle}
-				onBlur={onChangeField}
-				id={`input-question-title-${qIndex}`}
-      		/>
-      		{validateErrors?.title && (
-				<Text
-					theme={TextTheme.ERROR} 
-					text={validateErrorsTranslate[validateErrors.title]}
-					className={cls.error}
-				/>
-			)}
-      		<Text title={"Описание:"} size={TextSize.M} className={cls.hint} />
-      		<Input
-        		value={description}
-        		placeholder="Введите описание вопроса..."
-        		className={cls.input}
-        		onChange={onChangeDescription}
-				onBlur={onChangeField}
-				id={`input-question-description-${qIndex}`}
-      		/>
-      		<Text title={"Текст подсказка:"} size={TextSize.M} className={cls.hint} />
-      		{question?.type === "input" ? (
-        		<Input
-          			value={placeholder}
-          			placeholder={"Введите текст подсказку..."}
-          			className={cls.input}
-          			onChange={onChangePlaceholder}
+        		</HStack>
+      		</HStack>
+			<VStack max gap="4">
+				<Text title={"Заголовок:"} size={TextSize.M} />
+				{validateErrors?.title && (
+					<Text
+						theme={TextTheme.ERROR} 
+						text={validateErrorsTranslate[validateErrors.title]}
+					/>
+				)}
+      			<Input
+        			value={title}
+        			placeholder="Введите название вопроса..."
+					onChange={onChangeTitle}
 					onBlur={onChangeField}
-					id={`input-question-hint-${qIndex}`}
-        		/>
-      		) : (
-        		<TextArea
-          			value={placeholder}
-          			placeholder={"Введите текст подсказку..."}
-          			className={cls.input}
-          			onChange={onChangePlaceholder}
+					id={`input-question-title-${qIndex}`}
+      			/>
+			</VStack>
+			<VStack max gap="4">
+				<Text title={"Описание:"} size={TextSize.M} />
+      			<Input
+        			value={description}
+        			placeholder="Введите описание вопроса..."
+        			onChange={onChangeDescription}
 					onBlur={onChangeField}
-					id={`input-question-hint-${qIndex}`}
-        		/>
-      		)}
-    </div>
+					id={`input-question-description-${qIndex}`}
+      			/>
+			</VStack>
+			<VStack max gap="4">
+				<Text title={"Текст подсказка:"} size={TextSize.M} />
+      			{question?.type === "input" ? (
+        			<Input
+          				value={placeholder}
+          				placeholder={"Введите текст подсказку..."}
+          				onChange={onChangePlaceholder}
+						onBlur={onChangeField}
+						id={`input-question-hint-${qIndex}`}
+        			/>
+      			) : (
+        			<TextArea
+          				value={placeholder}
+          				placeholder={"Введите текст подсказку..."}
+          				onChange={onChangePlaceholder}
+						onBlur={onChangeField}
+						id={`input-question-hint-${qIndex}`}
+        			/>
+      			)}
+			</VStack>
+    </VStack>
   )
 })

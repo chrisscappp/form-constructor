@@ -4,6 +4,7 @@ import { classNames } from "shared/lib/classNames/classNames"
 import { Text, TextSize } from "shared/ui/Text/Text"
 import { FormQuestion, FormQuestionAnswer } from "../../model/types/form"
 import { Input } from "shared/ui/Input/Input"
+import { VStack } from "shared/ui/Stack"
 
 interface FormDetailCardInputProps {
 	className?: string
@@ -17,18 +18,19 @@ export const FormDetailCardInput = memo((props: FormDetailCardInputProps) => {
 		question
 	} = props
 
-	//const active = question?.activeAnswer as FormQuestionAnswer
-
 	return (
-		<div className={classNames(cls.FormDetailCardInput, {}, [className])}>
+		<VStack 
+			className={classNames('', {}, [className])}
+			max
+			gap="4"
+		>
 			<Text
 				title={question?.title}
-				size={TextSize.ML}
+				size={TextSize.L}
 			/>
 			{question?.description && (
 				<Text
 					text={question.description}
-					className={cls.description}
 				/>
 			)}
 			<Input
@@ -36,6 +38,6 @@ export const FormDetailCardInput = memo((props: FormDetailCardInputProps) => {
 				readonly={true}
 				className={cls.inputField}
 			/>
-		</div>
+		</VStack>
 	)
 })

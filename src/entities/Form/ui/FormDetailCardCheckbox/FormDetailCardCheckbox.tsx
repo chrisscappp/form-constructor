@@ -1,9 +1,10 @@
 import { memo, useMemo } from "react"
 import { classNames } from "shared/lib/classNames/classNames"
 import cls from "./FormDetailCardCheckbox.module.scss"
-import { FormQuestion, FormQuestionAnswer } from "../../model/types/form"
+import { FormQuestion } from "../../model/types/form"
 import { Text, TextSize } from "shared/ui/Text/Text"
 import { Checkbox, CheckboxItem } from "shared/ui/CheckBox/CheckBox"
+import { VStack } from "shared/ui/Stack"
 
 interface FormDetailCardCheckboxProps {
 	className?: string,
@@ -28,13 +29,15 @@ export const FormDetailCardCheckbox = memo((props: FormDetailCardCheckboxProps) 
 		})
 	}, [])
 
-	//const active = question?.activeAnswer as FormQuestionAnswer[]
-
 	return (
-		<div className={classNames(cls.FormDetailCardCheckbox, {}, [className])}>
+		<VStack 
+			max
+			gap="4"
+			className={classNames(cls.FormDetailCardCheckbox, {}, [className])}
+		>
 			<Text
 				title={question?.title}
-				size={TextSize.ML}
+				size={TextSize.L}
 			/>
 			{question?.description && (
 				<Text
@@ -44,8 +47,8 @@ export const FormDetailCardCheckbox = memo((props: FormDetailCardCheckboxProps) 
 			<Checkbox
 				name={`form-checkbox-${question?.id}`}
 				items={checkboxItems}
-				className={cls.radios}
+				className={cls.checkboxes}
 			/>
-		</div>
+		</VStack>
 	)
 })

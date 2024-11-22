@@ -10,8 +10,8 @@ import { useSelector } from "react-redux"
 import { getAddFormQuestionCount, getAddFormQuestionFieldType, getAddFormQuestionValueType } from "../../modal/selectors/addFormSelectors"
 import { addFormQuestionModalActions } from "../../modal/slice/addFormSlice"
 import { FormQuestionType, FormQuestionValueType } from "entities/Form"
-import { Select, SelectOption } from "shared/ui/Select/Select"
 import { Input } from "shared/ui/Input/Input"
+import { Listbox } from "shared/ui/Listbox/Listbox"
 
 export interface AddFormQuestionFormProps {
 	className?: string,
@@ -19,22 +19,23 @@ export interface AddFormQuestionFormProps {
 	onAddQuestion?: () => void
 }
 
-const selectCountOptions: SelectOption[] = [
-	{ content: "1", value: 1 },
-	{ content: "2", value: 2 },
-	{ content: "3", value: 3 }
+const selectCountOptions = [
+	{ content: "1", value: "1", disabled: false },
+	{ content: "2", value: "2", disabled: false },
+	{ content: "3", value: "3", disabled: false }
 ]
 
-const selectFieldTypeOptions: SelectOption[] = [
-	{ content: "Радио", value: "radio" },
-	{ content: "Чекбоск", value: "checkbox" },
-	{ content: "Поле ввода", value: "input" },
-	{ content: "Большое поле ввода", value: "textarea" }
+const selectFieldTypeOptions = [
+	{ content: "Радио", value: "radio", disabled: false },
+	{ content: "Чекбоск", value: "checkbox", disabled: false },
+	{ content: "Поле ввода", value: "input", disabled: false },
+	{ content: "Большое поле ввода", value: "textarea", disabled: false },
+	{ content: "Выпадающий список", value: "listbox", disabled: false }
 ]
 
-const selectFieldValueTypeOptions: SelectOption[] = [
-	{ content: "Строка", value: "string" },
-	{ content: "Число", value: "number" }
+const selectFieldValueTypeOptions = [
+	{ content: "Строка", value: "string", disabled: false },
+	{ content: "Число", value: "number", disabled: false }
 ]
 
 const AddFormQuestionForm = (props: AddFormQuestionFormProps) => {
@@ -54,12 +55,12 @@ const AddFormQuestionForm = (props: AddFormQuestionFormProps) => {
 		dispatch(addFormQuestionModalActions.setQuestionsCount(Number(value)))
 	}, [dispatch])
 
-	const onChangeQuestionFieldType = useCallback((value: FormQuestionType) => {
-		dispatch(addFormQuestionModalActions.setQuestionsFieldType(value))
+	const onChangeQuestionFieldType = useCallback((value: string) => {
+		dispatch(addFormQuestionModalActions.setQuestionsFieldType(value as FormQuestionType))
 	}, [dispatch])
 
-	const onChangeQuestionValueType = useCallback((value: FormQuestionValueType) => {
-		dispatch(addFormQuestionModalActions.setQuestionValueType(value))
+	const onChangeQuestionValueType = useCallback((value: string) => {
+		dispatch(addFormQuestionModalActions.setQuestionValueType(value as FormQuestionValueType))
 	}, [dispatch])
 
 	const onKeyDown = useCallback((e: KeyboardEvent) => {
@@ -76,9 +77,8 @@ const AddFormQuestionForm = (props: AddFormQuestionFormProps) => {
 	}, [onKeyDown])
 
 	return (
-		<Form className = {classNames(cls.AddFormQuestionForm, {}, [className])}>
+		<Form className = {classNames('', {}, [className])}>
 			<Text
-				className = {cls.formTitle}
 				title = {"Новый вопрос"}
 				size={TextSize.L}
 			/>
@@ -90,17 +90,16 @@ const AddFormQuestionForm = (props: AddFormQuestionFormProps) => {
 				/>
 				<div className={cls.questionCount}>
 					<Input
-						value={String(questionCount)}
+						value={questionCount}
 						className={cls.countInput}
 					/>
-					<Select
+					<Listbox
 						value={String(questionCount)}
 						onChange={onChangeQuestionCount}
-						options={selectCountOptions}
+						items={selectCountOptions}
 					/>
 				</div>
 			</div>
-			
 			<div className={cls.body}>
 				<Text
 					text="Выберите тип поля:"
@@ -109,13 +108,13 @@ const AddFormQuestionForm = (props: AddFormQuestionFormProps) => {
 				/>
 				<div className={cls.questionCount}>
 					<Input
-						value={String(questionFieldType?.content)}
+						value={questionFieldType?.content}
 						className={cls.countInput}
 					/>
-					<Select
-						value={String(questionFieldType?.value)}
+					<Listbox
+						value={questionFieldType?.value}
 						onChange={onChangeQuestionFieldType}
-						options={selectFieldTypeOptions}
+						items={selectFieldTypeOptions}
 					/>
 				</div>
 			</div>
@@ -128,13 +127,14 @@ const AddFormQuestionForm = (props: AddFormQuestionFormProps) => {
 					/>
 					<div className={cls.questionCount}>
 						<Input
-							value={String(questionValueType?.content)}
+							value={questionValueType?.content}
 							className={cls.countInput}
 						/>
-						<Select
-							value={String(questionValueType?.value)}
+						<Listbox
+							value={questionValueType?.value}
 							onChange={onChangeQuestionValueType}
-							options={selectFieldValueTypeOptions}
+							items={selectFieldValueTypeOptions}
+							direction="top"
 						/>
 					</div>
 				</div>	

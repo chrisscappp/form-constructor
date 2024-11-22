@@ -13,6 +13,8 @@ import {
 	ValidateFormErrors
 } from "../../model/types/editForm"
 import { InputRadioAnswer } from "./InputRadioAnswer"
+import { fieldTypeTranslate } from "../../model/consts/fieldTypeTranslate"
+import { HStack, VStack } from "shared/ui/Stack"
 
 interface EditFormCardRadioProps {
 	className?: string,
@@ -97,11 +99,14 @@ export const EditFormCardRadio = memo((props: EditFormCardRadioProps) => {
 	}, [])
 
 	return (
-		<div className={classNames(cls.Edi, {}, [className])}>
-			<hr className={cls.line}/>
-			<div className={cls.questionHeader}>
-				<Text title={`Вопрос №${qIndex + 1} | ${question?.type}`} size={TextSize.ML} />
-				<div className={cls.questionPanel}>
+		<VStack 
+			className={classNames(cls.EditableFormDetailCardRadio, {}, [className])}
+			gap="8"
+			max
+		>
+			<HStack justify="between" max>
+				<Text title={`Вопрос №${qIndex + 1} | ${fieldTypeTranslate[question?.type || 'radio']}`} size={TextSize.ML} />
+				<HStack gap="4">
           			<Button
             			title="Отменить изменения"
             			size={ButtonSize.L}
@@ -115,71 +120,72 @@ export const EditFormCardRadio = memo((props: EditFormCardRadioProps) => {
             			title="Удалить вопрос"
             			size={ButtonSize.L}
             			square
-            			className={classNames(cls.btn, {}, [cls.removeBtn])}
+            			className={cls.btn}
             			onClick={() => onDeleteQuestion?.(qIndex)}
           			>
             			<RemoveIcon className={cls.icon} />
           			</Button>
-        		</div>
-			</div>
-			<Text title={"Заголовок:"} size={TextSize.M} className={cls.hint} />
-			<Input
-        		value={title}
-        		placeholder="Введите название вопроса..."
-        		className={cls.input}
-        		onChange={onChangeTitle}
-				onBlur={onChangeField}
-				id={`input-question-title-${qIndex}`}
-      		/>
-			{validateErrors?.title && (
-				<Text
-					theme={TextTheme.ERROR} 
-					text={validateErrorsTranslate[validateErrors.title]}
-					className={cls.error}
-				/>
-			)}
-      		<Text title={"Описание:"} size={TextSize.M} className={cls.hint} />
-      		<Input
-        		value={description}
-        		placeholder="Введите описание вопроса..."
-        		className={cls.input}
-        		onChange={onChangeDescription}
-				onBlur={onChangeField}
-				id={`input-question-description-${qIndex}`}
-      		/>
-			<Text title={"Ответы:"} size={TextSize.M} className={cls.hint} />
-			<div className={cls.answers}>
-				{question?.answers?.length ? question.answers.map((answer, aIndex) => (
-					<>
-						<InputRadioAnswer
-							key={String(answer.value) + answer.id}
-							answer={answer}
-							onChangeContent={onChangeContent}
-							aIndex={aIndex}
-							onDelete={onDelete}
-						/>
-						{validateErrors?.answersErrors && (
-							<Text
-								theme={TextTheme.ERROR}
-								text={validateErrorsTranslate[validateErrors.answersErrors[aIndex] || ValidateFormErrors.EMPTY_ERROR]}
-								className={cls.error}
-							/>
-						)}
-					</>
-				)) : (
-					<Text
-						text="Список ответов пуст. Нажмите +, чтобы добавить!"
-						className={cls.hint}
-					/>
-				)}
-				{validateErrors?.emptyAnswers && (
+        		</HStack>
+			</HStack>
+			<VStack max gap="4">
+				<Text title={"Заголовок:"} size={TextSize.M} />
+				{validateErrors?.title && (
 					<Text
 						theme={TextTheme.ERROR} 
-						text={validateErrorsTranslate[validateErrors.emptyAnswers]}
-						className={cls.error}
+						text={validateErrorsTranslate[validateErrors.title]}
 					/>
 				)}
-			</div>
+				<Input
+        			value={title}
+        			placeholder="Введите название вопроса..."
+        			className={cls.input}
+        			onChange={onChangeTitle}
+					onBlur={onChangeField}
+					id={`input-question-title-${qIndex}`}
+      			/>
+			</VStack>
+			<VStack max gap="4">
+				<Text title={"Описание:"} size={TextSize.M} />
+      			<Input
+        			value={description}
+        			placeholder="Введите описание вопроса..."
+        			onChange={onChangeDescription}
+					onBlur={onChangeField}
+					id={`input-question-description-${qIndex}`}
+      			/>
+			</VStack>
+			<VStack max gap="4">
+				<Text title={"Ответы:"} size={TextSize.M} />
+				<VStack className={cls.answers} gap="8">
+					{question?.answers?.length ? question.answers.map((answer, aIndex) => (
+						<>
+							{validateErrors?.answersErrors && (
+								<Text
+									theme={TextTheme.ERROR}
+									text={validateErrorsTranslate[validateErrors.answersErrors[aIndex] || ValidateFormErrors.EMPTY_ERROR]}
+								/>
+							)}
+							<InputRadioAnswer
+								key={String(answer.value) + answer.id}
+								answer={answer}
+								onChangeContent={onChangeContent}
+								aIndex={aIndex}
+								onDelete={onDelete}
+							/>
+						</>
+					)) : (
+						<Text
+							text="Список ответов пуст. Нажмите +, чтобы добавить!"
+						/>
+					)}
+					{validateErrors?.emptyAnswers && (
+						<Text
+							theme={TextTheme.ERROR} 
+							text={validateErrorsTranslate[validateErrors.emptyAnswers]}
+						/>
+					)}
+				</VStack>
+			</VStack>
 			<Button 
 				size={ButtonSize.L} 
 				square 
@@ -189,6 +195,6 @@ export const EditFormCardRadio = memo((props: EditFormCardRadioProps) => {
 			>
 				+
 			</Button>
-		</div>
+		</VStack>
 	)
 })

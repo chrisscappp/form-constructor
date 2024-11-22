@@ -7,6 +7,7 @@ import { routerPath } from "shared/config/routeConfig/routeConfig"
 import { useAppDispatch } from "shared/lib/hooks/useAppDispatch"
 import cls from "./FormEditPage.module.scss"
 import { EditForm, initFormEditFeauture, updateForm } from "feautures/EditForm"
+import { VStack } from "shared/ui/Stack"
 
 const FormEditPage = () => {
 	const { id } = useParams<{ id: string }>()
@@ -48,16 +49,21 @@ const FormEditPage = () => {
 	
 	return (
 		<Page className={cls.page}>
-			<FormEditPageHeader
-				isCreateFormRoute = {isCreateFormRoute}
-				onUndoChanges={onUndoChanges}
-			/>
-			<EditForm
-				formId={id}
-				isCreateFormRoute={isCreateFormRoute}
-				onOpenConfirmModal={onOpenConfirmModal}
-				onUndoChanges={onUndoChanges}
-			/>
+			<VStack 
+				max
+				gap="20"
+			>
+				<FormEditPageHeader
+					isCreateFormRoute = {isCreateFormRoute}
+					onUndoChanges={onUndoChanges}
+				/>
+				<EditForm
+					formId={id}
+					isCreateFormRoute={isCreateFormRoute}
+					onOpenConfirmModal={onOpenConfirmModal}
+					onUndoChanges={onUndoChanges}
+				/>
+			</VStack>
 			{isOpenConfirmModal && (
 				<ConfirmEditingFormModal
 					isOpen={isOpenConfirmModal}

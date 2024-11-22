@@ -9,6 +9,7 @@ import { Card } from "shared/ui/Card/Card"
 import { Button, ButtonSize } from "shared/ui/Button/Button"
 import { useNavigate } from "react-router"
 import { routerPath } from "shared/config/routeConfig/routeConfig"
+import { HStack, VStack } from "shared/ui/Stack"
 
 interface FormSimplifyListItemProps {
 	className?: string,
@@ -30,18 +31,24 @@ export const FormSimplifyListItem = memo((props: FormSimplifyListItemProps) => {
 
 	return (
     <Card className={classNames(cls.FormSimplifyListItem, {}, [className])}>
-      <div className={cls.info}>
+      <VStack 
+        gap="4"
+      >
         <Text title={form?.title} size={TextSize.XL} />
         {form?.description && (
           <Text
             text={form?.description}
             size={TextSize.L}
-            className={cls.description}
           />
         )}
-      </div>
-      <div className={cls.footer}>
-        <div className={cls.footerInfo}>
+      </VStack>
+      <HStack 
+        className={cls.footer}
+        justify="between"
+      >
+        <VStack
+          gap="4"
+        >
           <div className={cls.dateWrapper}>
             <CalendarIcon className={cls.calendar} />
             <Text text={form?.date} className={cls.date} size={TextSize.ML} />
@@ -54,7 +61,7 @@ export const FormSimplifyListItem = memo((props: FormSimplifyListItemProps) => {
               size={TextSize.ML}
             />
           </div>
-        </div>
+        </VStack>
         <Button
           className={cls.button}
           size={ButtonSize.ML}
@@ -62,7 +69,7 @@ export const FormSimplifyListItem = memo((props: FormSimplifyListItemProps) => {
         >
           Подробнее...
         </Button>
-      </div>
+      </HStack>
     </Card>
   );
 })
