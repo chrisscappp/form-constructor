@@ -1,4 +1,4 @@
-export type FormQuestionType = "input" | "checkbox" | "radio" | "textarea" // тип поля
+export type FormQuestionType = "input" | "checkbox" | "radio" | "textarea" | "listbox" // тип поля
 export type FormQuestionValueType = "string" | "number" // тип вводимого значения
 
 export interface FormQuestionAnswer {

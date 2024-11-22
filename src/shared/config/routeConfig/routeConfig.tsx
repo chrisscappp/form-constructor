@@ -3,7 +3,6 @@ import { MainPage } from "pages/MainPage"
 import { FormPage } from "pages/FormPage"
 import { NotFoundPage } from "pages/NotFoundPage"
 import { ProfilePage } from "pages/ProfilePage"
-import { FormCreatePage } from "pages/FormCreatePage"
 import { FormEditPage } from "pages/FormEditPage"
 
 export enum AppRoutes {

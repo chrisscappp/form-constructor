@@ -6,6 +6,10 @@ import { FormSimplifyListItem } from "../FormSimplifyListItem/FormSimplifyListIt
 import { Loader } from "shared/ui/Loader/Loader"
 import { FormInstrumentPanel } from "../FormInstrumentPanel/FormInstrumentPanel"
 import { Text, TextAlign, TextSize, TextTheme } from "shared/ui/Text/Text"
+import { Button } from "shared/ui/Button/Button"
+import { useNavigate } from "react-router"
+import { routerPath } from "shared/config/routeConfig/routeConfig"
+import { HStack, VStack } from "shared/ui/Stack"
 
 interface FormSimplifyListProps {
 	className?: string,
@@ -25,9 +29,17 @@ export const FormSimplifyList = memo((props: FormSimplifyListProps) => {
 		onOpenModalDelete
 	} = props
 
+	const navigate = useNavigate()
+
 	const list = useMemo(() => {
 		return forms?.map((item) => (
-			<div className={cls.listItem} key={item.id}>
+			<HStack 
+				max 
+				align="start" 
+				gap="20" 
+				key={item.id} 
+				className={cls.listItem}
+			>
 				<FormSimplifyListItem
 					form={item}
 					className={cls.form}
@@ -38,18 +50,22 @@ export const FormSimplifyList = memo((props: FormSimplifyListProps) => {
 					onOpenModalDelete={onOpenModalDelete}
 					className={cls.panel}
 				/>
-			</div>
+			</HStack>
 		))
 	}, [forms])
 
 	if (isLoading) {
-		return (<div className={classNames(cls.FormSimplifyList, {}, [className])}>
-			<Loader/>
-		</div>)
+		return (
+			<HStack 
+				className={classNames(cls.loaderWrap, {}, [className])}
+			>
+				<Loader/>
+			</HStack>
+		)
 	}
 
 	if (error) {
-		return (<div className={classNames(cls.FormSimplifyList, {}, [className])}>
+		return (<div className={classNames('', {}, [className])}>
 			<Text
 				title={error}
 				size={TextSize.L}
@@ -59,8 +75,24 @@ export const FormSimplifyList = memo((props: FormSimplifyListProps) => {
 	}
 
 	return (
-		<div className={classNames(cls.FormSimplifyList, {}, [className])}>
+		<VStack gap="20" max className={classNames(cls.FormSimplifyList, {}, [className])}>
 			{list}
-		</div>
+			{forms?.length === 0 && (
+				<VStack 
+					align="center"
+					className={cls.emptyForms}
+					max
+					gap="12"
+				>
+					<Text
+						title="Список ваших форм пуст. Создайте новую форму!"
+						size={TextSize.L}
+					/>
+					<Button onClick={() => navigate(routerPath.form_create)}>
+						Создать форму
+					</Button>					
+				</VStack>
+			)}
+		</VStack>
 	)
 })

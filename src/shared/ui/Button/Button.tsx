@@ -31,7 +31,7 @@ interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
 	hoveredTheme?: ButtonTheme;
 	hovered?: boolean;
 	children?: ReactNode;
-} // специальный тип html тега
+}
 
 export const Button = memo((props: ButtonProps) => {
 

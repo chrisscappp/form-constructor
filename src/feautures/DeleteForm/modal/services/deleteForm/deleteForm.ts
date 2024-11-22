@@ -21,11 +21,9 @@ export const deleteForm = createAsyncThunk<
 			rejectWithValue
 		} = thunkAPI
 
-		// впоследствии будет 1 роут, который удалит все данные о форме где это необходимо
 		try {
-    		const response1 = await extra.api.delete(`/formDetail/${id}`)
-			const response2 = await extra.api.delete(`/forms/${id}`)
-			return response2.data
+    		const response = await extra.api.delete(`/deleteFormData/${id}`)
+			return response.data
 		} catch (e) {
 			console.error(e)
 			return rejectWithValue("Произошла ошибка при попытке удаления формы. Попробуйте ещё раз...")

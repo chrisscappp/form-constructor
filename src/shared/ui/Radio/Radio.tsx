@@ -15,8 +15,7 @@ interface RadioProps {
 	items?: RadioItem[],
 	activeItem?: RadioItem,
 	name: string,
-	readonly?: boolean,
-	editable?: boolean
+	readonly?: boolean
 }
 
 export const Radio = memo((props: RadioProps) => {
@@ -28,7 +27,6 @@ export const Radio = memo((props: RadioProps) => {
 		name,
 		activeItem,
 		readonly = true,
-		editable = false
 	} = props
 
 	return (

@@ -2,7 +2,7 @@ import { classNames, Mods } from "shared/lib/classNames/classNames"
 import { ChangeEvent, CSSProperties, InputHTMLAttributes, memo, useEffect, useRef, useState } from "react"
 import cls from "./Input.module.scss"
 
-type HTMLInputProps = Omit<InputHTMLAttributes<HTMLInputElement>, "onChange" | "value" | "readOnly">
+type HTMLInputProps = Omit<InputHTMLAttributes<HTMLInputElement>, "onChange" | "value" | "readOnly" | "onBlur">
 
 interface InputProps extends HTMLInputProps {
 	className?: string,
@@ -10,6 +10,7 @@ interface InputProps extends HTMLInputProps {
 	placeholder?: string,
 	type?: string,
 	onChange?: (value: string) => void,
+	onBlur?: (e: any) => void,
 	readonly?: boolean,
 	autoFocus?: boolean
 }
@@ -23,7 +24,9 @@ export const Input = memo((props: InputProps) => {
 		autoFocus,
 		type,
 		onChange,
-		readonly 
+		onBlur,
+		readonly,
+		...otherProps
 	} = props
 
 	const [styles, setStyles] = useState<CSSProperties>()
@@ -49,8 +52,9 @@ export const Input = memo((props: InputProps) => {
 		})
 	}
 
-	const onBlur = () => {
+	const onBlurDefault = (e: any) => {
 		setStyles({})
+		onBlur?.(e)
 	}
 
 	return (
@@ -63,8 +67,9 @@ export const Input = memo((props: InputProps) => {
 			onChange = {onChangeHandler}
 			readOnly = {readonly}
 			type = {type || "text"}
-			onBlur = {onBlur}
+			onBlur = {onBlurDefault}
 			onFocus = {onFocus}
+			{...otherProps}
 		></input>
 	)
 })

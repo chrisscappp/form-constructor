@@ -1,31 +1,13 @@
-.FormPageHeader {
-	width: 100%;
-	display: flex;
-	align-items: center;
-}
-
 .backBtn {
 	background: rgb(240, 240, 240);
 	border-radius: 50%;
-	width: 52px;
-	height: 52px;
+	width: 60px;
+	height: 60px;
 }
 
 .arrow {
 	width: 32px;
 	height: 32px;
-}
-
-.panel {
-	margin-left: auto;
-}
-
-.undoBtn {
-	margin-left: auto;
-}
-
-.editPanel {
-	margin-bottom: 4px;
 }
 
 @media (max-width: 550px) {

@@ -1,0 +1,48 @@
+.fragmentBtn {
+	background: none;
+	border: none;
+}
+
+.triggerBtn {
+	padding: 10px;
+	justify-content: space-between;
+}
+
+.icon {
+	margin-left: 10px;
+	width: 20px;
+	height: 20px;
+}
+
+.options {
+	background: var(--listbox-options-bg);
+	box-shadow: 4px 4px 8px var(--listbox-options-bg);
+	position: absolute;
+	z-index: 99999;
+}
+
+.optionsTop {
+	bottom: 100%;
+	right: 0;
+}
+
+.option {
+	cursor: pointer;
+	padding: 15px 20px;
+}
+
+.focus {
+	transition: 0.3s;
+	background: #fff;
+}
+
+.disabled {
+	opacity: 0.7;
+}
+
+@media (max-width: 768px) {
+	.triggerBtn,
+	.fragmentBtn {
+		width: 100%;
+	}
+}

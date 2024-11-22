@@ -11,6 +11,7 @@ import { DynamicModuleLoader, ReducersList } from "shared/lib/components/Dynamic
 import { formDetailReducer } from "../model/slice/formPageSlice"
 import { useAppDispatch } from "shared/lib/hooks/useAppDispatch"
 import { fetchFormDetail } from "../model/services/fetchFormDetail/fetchFormDetail"
+import { VStack } from "shared/ui/Stack"
 
 const reducers: ReducersList = {
 	formDetail: formDetailReducer
@@ -40,19 +41,21 @@ const FormPage = () => {
 	return (
 		<DynamicModuleLoader reducers={reducers} removeAfterUnmount>
 			<Page className={cls.page}>
-				{!error && (
-					<FormPageHeader
-						formLink={form?.formLink || ""}
-						formId={form?.id ?? ""}
-						onOpenModalDelete={onOpenDeleteModal}
+				<VStack gap="20">
+					{!error && (
+						<FormPageHeader
+							formLink={form?.formLink || ""}
+							formId={form?.id ?? ""}
+							onOpenModalDelete={onOpenDeleteModal}
+						/>
+					)}
+					<FormDetailCard
+						className={cls.form}
+						form={form}
+						isLoading={isLoading}
+						error={error}
 					/>
-				)}
-				<FormDetailCard
-					className={cls.form}
-					form={form}
-					isLoading={isLoading}
-					error={error}
-				/>
+				</VStack>
 				{isOpenDeleteModal && (
 					<DeleteFormModal
 						isOpen={isOpenDeleteModal}

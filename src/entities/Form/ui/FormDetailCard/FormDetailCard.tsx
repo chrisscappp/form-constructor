@@ -10,6 +10,9 @@ import { FormDetailCardInput } from "../FormDetailCardInput/FormDetailCardInput"
 import { FormDetailCardTextarea } from "../FormDetailCardTextarea/FormDetailCardTextarea"
 import { FormDetailCardRadio } from "../FormDetailCardRadio/FormDetailCardRadio"
 import { FormDetailCardCheckbox } from "../FormDetailCardCheckbox/FormDetailCardCheckbox"
+import { Loader } from "shared/ui/Loader/Loader"
+import { FormDetailCardListbox } from "../FormDetailCardListbox/FormDetailCardListbox"
+import { HStack, VStack } from "shared/ui/Stack"
 
 interface FormDetailCardProps {
 	form?: FormDetail,
@@ -37,66 +40,80 @@ export const FormDetailCard = memo((props: FormDetailCardProps) => {
 				return <FormDetailCardRadio key={question.id} className={cls.question} question={question}/>
 			case "checkbox":
 				return <FormDetailCardCheckbox key={question.id} className={cls.question} question={question}/>
+			case "listbox":
+				return <FormDetailCardListbox key={question.id} className={cls.question} question={question}/>
 			default:
 				return null
 		}
 	}, [])
 
 	if (isLoading) {
-		return (<Card className={classNames(cls.FormCard, {}, [className])}>
-			<div>loading</div>
-		</Card>)
+		return (
+			<Card className={classNames(cls.loaderWrap, {}, [className])}>
+				<Loader/>
+			</Card>
+		)
 	}
 
 	if (error) {
-		return (<div className={classNames(cls.error, {}, [className])}>
-			<Text
-				title={error}
-				align={TextAlign.CENTER}
-				size={TextSize.L}
-			/>
-		</div>)
+		return (
+			<HStack 
+				className={cls.error}
+				max
+			>
+				<Text
+					title={error}
+					align={TextAlign.CENTER}
+					size={TextSize.L}
+				/>
+			</HStack>
+		)
 	}
 
 	return (
 		<Card className={classNames(cls.FormCard, {}, [className])}>
-			<div className={cls.header}>
-				<div className={cls.headerInfo}>
+			<HStack 
+				className={cls.header} 
+				justify="between"
+				gap="20"
+			>
+				<VStack gap="4">
 					<Text title={form?.title} size={TextSize.XL} />
 					{form?.description && (
           				<Text
             				text={form?.description}
             				size={TextSize.L}
-            				className={cls.description}
           				/>
 					)}
-				</div>
-				<div className={cls.headerAdditional}>
-					<div className={cls.dateWrapper}>
+				</VStack>
+				<VStack gap="4" className={cls.headerAdditional}>
+					<HStack gap="4">
             			<CalendarIcon className={cls.calendar} />
-            			<Text text={form?.date} className={cls.date} />
-          			</div>
-          			<div className={cls.filledWrapper}>
+            			<Text text={form?.date} />
+          			</HStack>
+          			<HStack gap="4">
             			<EyeIcon className={cls.eye} />
-            			<Text text={String(form?.filled || 0)} className={cls.filled} />
-          			</div>
+            			<Text text={String(form?.filled || 0)} />
+          			</HStack>
 					<Text
-						className={cls.count}
 						text={`Количество вопросов: ${form?.questionCount || 0}`}
 						size={TextSize.M}
 					/>
 					<Text
-						className={cls.count}
 						text={`ID: ${form?.id || 0}`}
 						size={TextSize.M}
 					/>
-				</div>
-			</div>
-			<div className={cls.body}>
+				</VStack>
+			</HStack>
+			<VStack 
+				max
+				gap="20"
+				className={cls.questions}
+			>
 				{form?.questions.map((question) => 
 					renderQuestionBlock(question)
 				)}	
-			</div>
+			</VStack>
 		</Card>
 	)
 })

@@ -1,0 +1,45 @@
+.loaderWrap {
+	display: flex;
+	justify-content: center;
+	padding: 50px !important;
+}
+
+.headerInfo {
+	width: 70%;
+}
+
+.eye,
+.calendar {
+	width: 24px;
+	height: 24px;
+}
+
+.questions {
+	margin-top: 20px;
+	width: 50%;
+}
+
+.addForm {
+	margin-left: auto;
+	margin-bottom: 12px;
+}
+
+.addFormIcon {
+	width: 32px;
+	height: 32px;
+}
+
+@media (max-width: 1000px) {
+	.header {
+		display: block;
+	}
+	.headerInfo {
+		width: 100%;
+	}
+	.headerAdditional {
+		margin-top: 20px;
+	}
+	.body {
+		width: 100%;
+	}
+}

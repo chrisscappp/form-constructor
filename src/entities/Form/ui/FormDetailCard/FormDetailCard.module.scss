@@ -1,26 +1,7 @@
-.header {
+.loaderWrap {
 	display: flex;
-}
-
-.headerInfo {
-	width: 70%;
-}
-
-.headerAdditional {
-	margin-left: auto;
-}
-
-.count {
-	margin-top: 4px;
-}
-
-.description {
-	margin-top: 6px;
-}
-
-.dateWrapper {
-	display: flex;
-	align-items: center;
+	justify-content: center;
+	padding: 50px;
 }
 
 .eye,
@@ -29,51 +10,8 @@
 	height: 24px;
 }
 
-.filledWrapper {
-	display: flex;
-	margin-top: 3px;
-	align-items: center;
-}
-
-.filled,
-.date {
-	margin-left: 5px;
-}
-
-.body {
+.questions {
 	margin-top: 20px;
-	width: 50%;
-}
-
-.question {
-	margin-bottom: 24px;
-}
-
-.editableQuestion {
-	margin-bottom: 32px;
-}
-
-.inputTitle {
-	margin-top: 6px;
-}
-
-.inputDescription {
-	margin-top: 6px;
-	width: 70%;
-}
-
-.changeDescription {
-	margin-top: 10px;
-}
-
-.addForm {
-	margin-left: auto;
-	margin-bottom: 12px;
-}
-
-.addFormIcon {
-	width: 32px;
-	height: 32px;
 }
 
 .error {
@@ -84,16 +22,7 @@
 	.header {
 		display: block;
 	}
-	.headerInfo {
-		width: 100%;
-	}
 	.headerAdditional {
-		margin-top: 24px;
-	}
-	.description {
-		margin-top: 12px;
-	}
-	.body {
-		width: 100%;
+		margin-top: 20px;
 	}
 }

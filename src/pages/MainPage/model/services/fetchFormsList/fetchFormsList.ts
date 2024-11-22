@@ -15,7 +15,7 @@ export const fetchFormsList = createAsyncThunk<
 		} = thunkAPI
 
 		try {
-    		const response = await extra.api.get<FormSimplify[]>("/forms")
+    		const response = await extra.api.get<FormSimplify[]>("/getFormSimplifyList")
 			return response.data
 		} catch (e) {
 			console.error(e)

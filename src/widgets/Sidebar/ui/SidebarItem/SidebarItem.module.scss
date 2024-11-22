@@ -1,7 +1,6 @@
 .SidebarItem {
-	padding: 15px;
-	display: flex;
-	align-items: center;
+	width: 100%;
+	padding: 5px;
 	transition: 0.2s;
 	cursor: pointer;
 	&:hover {
@@ -12,8 +11,4 @@
 .icon {
 	width: 30px;
 	height: 30px;
-}
-
-.text {
-	margin-left: 15px;
 }

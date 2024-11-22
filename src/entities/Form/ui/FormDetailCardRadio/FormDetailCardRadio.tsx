@@ -1,9 +1,10 @@
 import { memo, useMemo } from "react"
-import cls from "./FormDetailCardRadio.module.scss"
 import { classNames } from "shared/lib/classNames/classNames"
 import { Radio, RadioItem } from "shared/ui/Radio/Radio"
-import { FormQuestion, FormQuestionAnswer } from "../../model/types/form"
+import { FormQuestion } from "../../model/types/form"
 import { Text, TextSize } from "shared/ui/Text/Text"
+import { VStack } from "shared/ui/Stack"
+import cls from "./FormDetailCardRadio.module.scss"
 
 interface FormDetailCardRadioProps {
 	className?: string,
@@ -28,13 +29,15 @@ export const FormDetailCardRadio = memo((props: FormDetailCardRadioProps) => {
 		})
 	}, [])
 
-	const active = question?.activeAnswer as FormQuestionAnswer
-
 	return (
-		<div className={classNames(cls.FormDetailCardRadio, {}, [className])}>
+		<VStack 
+			max
+			gap="4"
+			className={classNames('', {}, [className])}
+		>
 			<Text
 				title={question?.title}
-				size={TextSize.ML}
+				size={TextSize.L}
 			/>
 			{question?.description && (
 				<Text
@@ -46,6 +49,6 @@ export const FormDetailCardRadio = memo((props: FormDetailCardRadioProps) => {
 				items={radioItems}
 				className={cls.radios}
 			/>
-		</div>
+		</VStack>
 	)
 })
