@@ -43,7 +43,6 @@ export const Radio = memo((props: RadioProps) => {
 							name = {name} 
 							type = "radio" 
 							value = {item.value}
-							checked = {item.id === activeItem?.id}
 							disabled = {readonly}
 						/>
 						<Text 

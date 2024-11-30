@@ -3,7 +3,7 @@ import cls from "./EditFormCardRadio.module.scss"
 import { classNames } from "shared/lib/classNames/classNames"
 import { FormQuestion } from "entities/Form"
 import { Text, TextSize, TextTheme } from "shared/ui/Text/Text"
-import { Button, ButtonSize } from "shared/ui/Button/Button"
+import { Button, ButtonSize, ButtonTheme } from "shared/ui/Button/Button"
 import UndoIcon from "shared/assets/icons/go-back-arrow.svg"
 import RemoveIcon from "shared/assets/icons/trash-icon.svg"
 import { Input } from "shared/ui/Input/Input"
@@ -15,6 +15,8 @@ import {
 import { InputRadioAnswer } from "./InputRadioAnswer"
 import { fieldTypeTranslate } from "../../model/consts/fieldTypeTranslate"
 import { HStack, VStack } from "shared/ui/Stack"
+import { BindAnswerWithQuestionModal } from "feautures/BindAnswerWithQuestion"
+import ConnectionArrowIcon from "shared/assets/icons/connection-arrow.svg"
 
 interface EditFormCardRadioProps {
 	className?: string,
@@ -51,6 +53,18 @@ export const EditFormCardRadio = memo((props: EditFormCardRadioProps) => {
 
 	const [title, setTitle] = useState(question?.title ?? "")
 	const [description, setDescription] = useState(question?.description ?? "")
+	const [isShowBindModal, setIsShowBindModal] = useState(false)
+	const [aIndexValue, setAIndexValue] = useState(-1)
+
+	const onShowBindModal = useCallback((index: number) => {
+		setIsShowBindModal(true)
+		setAIndexValue(index)
+	}, [aIndexValue])
+
+	const onCloseBindModal = useCallback(() => {
+		setIsShowBindModal(false)
+		setAIndexValue(-1)
+	}, [])
 
 	const onChangeTitle = useCallback((value: string) => {
 		setTitle(value)
@@ -158,21 +172,32 @@ export const EditFormCardRadio = memo((props: EditFormCardRadioProps) => {
 				<Text title={"Ответы:"} size={TextSize.M} />
 				<VStack className={cls.answers} gap="8">
 					{question?.answers?.length ? question.answers.map((answer, aIndex) => (
-						<>
+						<VStack key={String(answer.value) + answer.id}>
 							{validateErrors?.answersErrors && (
 								<Text
 									theme={TextTheme.ERROR}
 									text={validateErrorsTranslate[validateErrors.answersErrors[aIndex] || ValidateFormErrors.EMPTY_ERROR]}
 								/>
 							)}
-							<InputRadioAnswer
-								key={String(answer.value) + answer.id}
-								answer={answer}
-								onChangeContent={onChangeContent}
-								aIndex={aIndex}
-								onDelete={onDelete}
-							/>
-						</>
+							<HStack gap="8">
+								<InputRadioAnswer
+									answer={answer}
+									onChangeContent={onChangeContent}
+									aIndex={aIndex}
+									onDelete={onDelete}
+								/>
+								<Button 
+									className={cls.btn} 
+									square 
+									size={ButtonSize.L}
+									theme={ButtonTheme.CLEAR}
+									title="Привязать ответ к вопросу"
+									onClick={() => onShowBindModal(aIndex)}
+								>
+									<ConnectionArrowIcon className={cls.connection}/>
+								</Button>
+							</HStack>
+						</VStack>
 					)) : (
 						<Text
 							text="Список ответов пуст. Нажмите +, чтобы добавить!"
@@ -190,11 +215,20 @@ export const EditFormCardRadio = memo((props: EditFormCardRadioProps) => {
 				size={ButtonSize.L} 
 				square 
 				className={classNames(cls.btn, {}, [cls.plusBtn])}
-				title="Добавить вопрос"
+				title="Добавить ответ"
 				onClick={() => onAddRadioField?.(qIndex)}
 			>
 				+
 			</Button>
+			{isShowBindModal && (
+				<BindAnswerWithQuestionModal
+					isOpen={isShowBindModal}
+					onClose={onCloseBindModal}
+					excludeQuestionIndex={qIndex}
+					bindAnswerIndex={aIndexValue}
+					formId={question?.formId ?? ""}
+				/>
+			)}
 		</VStack>
 	)
 })

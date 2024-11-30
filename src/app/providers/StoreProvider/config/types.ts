@@ -3,6 +3,7 @@ import { AxiosInstance } from "axios"
 import { AddFormQuestionSchema } from "feautures/AddFormQuestion"
 import { DeleteFormModalSchema } from "feautures/DeleteForm"
 import { EditFormSchema } from "feautures/EditForm"
+import { BindAnswerFormSchema } from "feautures/BindAnswerWithQuestion"
 import { FormsListSchema } from "pages/MainPage"
 import { FormPageSchema } from "pages/FormPage"
 
@@ -12,7 +13,8 @@ export interface StateSchema {
 	formDetail?: FormPageSchema,
 	editForm?: EditFormSchema,
 	deleteForm?: DeleteFormModalSchema,
-	addQuestionForm?: AddFormQuestionSchema
+	addQuestionForm?: AddFormQuestionSchema,
+	bindAnswerForm?: BindAnswerFormSchema
 }
 
 export type StateSchemaKey = keyof StateSchema

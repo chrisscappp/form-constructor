@@ -7,15 +7,17 @@ import { TextArea } from "shared/ui/Textarea/Textarea"
 import { VStack } from "shared/ui/Stack"
 
 interface FormDetailCardTextareaProps {
-	className?: string
-	question?: FormQuestion
+	className?: string,
+	question?: FormQuestion,
+	readonly?: boolean
 }
 
 export const FormDetailCardTextarea = memo((props: FormDetailCardTextareaProps) => {
 	
 	const {
 		className,
-		question
+		question,
+		readonly
 	} = props
 
 	return (
@@ -35,7 +37,7 @@ export const FormDetailCardTextarea = memo((props: FormDetailCardTextareaProps) 
 			)}
 			<TextArea
 				placeholder={question?.inputPlaceholder || "Введите ответ на вопрос..."}
-				readonly={true}
+				readonly={readonly}
 				className={cls.inputField}
 			/>
 		</VStack>

@@ -7,15 +7,17 @@ import { Input } from "shared/ui/Input/Input"
 import { VStack } from "shared/ui/Stack"
 
 interface FormDetailCardInputProps {
-	className?: string
-	question?: FormQuestion
+	className?: string,
+	question?: FormQuestion,
+	readonly?: boolean
 }
 
 export const FormDetailCardInput = memo((props: FormDetailCardInputProps) => {
 	
 	const {
 		className,
-		question
+		question,
+		readonly
 	} = props
 
 	return (
@@ -35,7 +37,7 @@ export const FormDetailCardInput = memo((props: FormDetailCardInputProps) => {
 			)}
 			<Input
 				placeholder={question?.inputPlaceholder || "Введите ответ на вопрос..."}
-				readonly={true}
+				readonly={readonly}
 				className={cls.inputField}
 			/>
 		</VStack>

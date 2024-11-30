@@ -7,5 +7,6 @@ export {
 	FormDetail, 
 	FormQuestionType,
 	FormQuestionValueType,
-	FormQuestion
+	FormQuestion,
+	FormQuestionAnswer
 } from "./model/types/form"

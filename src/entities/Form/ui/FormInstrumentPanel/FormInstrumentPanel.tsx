@@ -6,37 +6,47 @@ import FormEditIcon from "shared/assets/icons/edit-form-icon.svg"
 import TrashIcon from "shared/assets/icons/trash-icon.svg"
 import LinkIcon from "shared/assets/icons/link-icon.svg"
 import { Button, ButtonTheme } from "shared/ui/Button/Button"
-import { useNavigate } from "react-router"
+import { useLocation, useNavigate } from "react-router"
 import { routerPath } from "shared/config/routeConfig/routeConfig"
 import { HStack } from "shared/ui/Stack"
+import { FORM_DETAIL_DATA } from "shared/consts/localStorageKeys"
+import { FormDetail } from "../../model/types/form"
 
 interface FormInstrumentPanelProps {
 	className?: string,
-  formLink: string,
-  formId: string,
-	onOpenModalDelete: (formId: string) => void,
+  formId?: string,
+  formLink?: string,
+  formDetail?: FormDetail
+	onOpenModalDelete: (formId?: string) => void,
 }
 
 export const FormInstrumentPanel = memo((props: FormInstrumentPanelProps) => {
 	
 	const {
 		className,
-    formLink,
+    formDetail,
     formId,
+    formLink,
 		onOpenModalDelete
 	} = props
 
   const navigate = useNavigate()
+  const location = useLocation()
 
   const onFollowToEditForm = useCallback(() => {
-    navigate(routerPath.form_edit + formId)
-  }, [formId])
+    if (formDetail && location.pathname === routerPath.form + formDetail.id) {
+      localStorage.setItem(FORM_DETAIL_DATA, JSON.stringify(formDetail))
+      navigate(routerPath.form_edit + formDetail.id)
+    } else {
+      navigate(routerPath.form_edit + formId)
+    }
+  }, [formDetail, location])
 
   const onCopyFormLink = useCallback(() => {
-    if (formLink) {
-      navigator.clipboard.writeText(formLink)
+    if (formDetail?.formLink) {
+      navigator.clipboard.writeText(formDetail.formLink)
     }
-  }, [formLink])
+  }, [formDetail])
 	
 	return (
     <Card className={classNames(cls.FormInstrumentPanel, {}, [className])}>

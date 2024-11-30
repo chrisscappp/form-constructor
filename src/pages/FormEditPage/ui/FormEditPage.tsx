@@ -1,7 +1,7 @@
 import { ConfirmEditingFormModal } from "feautures/ConfrimEditingForm"
 import { FormEditPageHeader } from "./FormEditPageHeader/FormEditPageHeader"
 import { memo, useCallback, useEffect, useState } from "react"
-import { Page } from "widgets/Page/Page"
+import { Page } from "widgets/Page"
 import { useLocation, useNavigate, useParams } from "react-router"
 import { routerPath } from "shared/config/routeConfig/routeConfig"
 import { useAppDispatch } from "shared/lib/hooks/useAppDispatch"

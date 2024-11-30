@@ -1,11 +1,13 @@
 .fragmentBtn {
 	background: none;
 	border: none;
+	width: 100%;
 }
 
 .triggerBtn {
 	padding: 10px;
 	justify-content: space-between;
+	width: 100%;
 }
 
 .icon {
@@ -19,11 +21,6 @@
 	box-shadow: 4px 4px 8px var(--listbox-options-bg);
 	position: absolute;
 	z-index: 99999;
-}
-
-.optionsTop {
-	bottom: 100%;
-	right: 0;
 }
 
 .option {

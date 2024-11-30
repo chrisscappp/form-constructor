@@ -6,6 +6,8 @@ import { validateFormCard } from "../services/validateFormCard/validateFormCard"
 import { createNewForm } from "../services/createNewForm/createNewForm"
 import { fetchFormDetail } from "pages/FormPage"
 import { updateForm } from "../services/updateForm/updateForm"
+import { isAnswerShowQuestion } from "shared/lib/typeGuards/isAnswerShowQuestion/isAnswerShowQuestion"
+import { FormQuestionAnswer } from "entities/Form/model/types/form"
 
 const initialState: EditFormSchema = {
   isLoading: false
@@ -133,6 +135,50 @@ const editFormSlice = createSlice({
           }
         }
       }
+    },
+    bindAnswerWithQuestion: (
+      state, 
+      action: PayloadAction<{ 
+        questionBindIds: string[], 
+        questionOriginIndex: number, 
+        questionAnswerIndex: number 
+      }>) => {
+        const { questionBindIds, questionOriginIndex, questionAnswerIndex } = action.payload
+        
+        if (state.form?.questions[questionOriginIndex].answers?.[questionAnswerIndex]) {
+          //@ts-ignore
+          const answer: FormQuestionAnswer = JSON.parse(JSON.stringify(state.form.questions[questionOriginIndex].answers[questionAnswerIndex]))
+          if (!isAnswerShowQuestion(answer)) {
+            answer.bindedQuestionIds = []
+          }
+          if (JSON.stringify(answer.bindedQuestionIds) !== JSON.stringify(questionBindIds)) {
+            //@ts-ignore
+            answer.bindedQuestionIds = questionBindIds
+            //@ts-ignore
+            state.form.questions[questionOriginIndex].answers[questionAnswerIndex] = answer
+          }
+        }
+    },
+    unbindAnswerFromQuestion: (
+      state, 
+      action: PayloadAction<{ 
+        questionBindId: string, 
+        questionOriginIndex: number, 
+        questionAnswerIndex: number 
+      }>) => {
+        const { questionBindId, questionOriginIndex, questionAnswerIndex } = action.payload
+
+        if (state.form?.questions[questionOriginIndex].answers?.[questionAnswerIndex]) {
+          //@ts-ignore
+          const answer: FormQuestionAnswer = JSON.parse(JSON.stringify(state.form.questions[questionOriginIndex].answers[questionAnswerIndex]))
+          // if (!isAnswerShowQuestion(answer)) {
+          //   answer.bindedQuestionIds = []
+          // }
+          const filterAnswerBindIds = answer.bindedQuestionIds?.filter(id => id !== questionBindId)
+          answer.bindedQuestionIds = filterAnswerBindIds
+          //@ts-ignore
+          state.form.questions[questionOriginIndex].answers[questionAnswerIndex] = answer
+        }
     },
     undoChangesForForm: (state) => {
       state.form = state.formData

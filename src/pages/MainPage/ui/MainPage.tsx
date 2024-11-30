@@ -1,7 +1,7 @@
 import { FormSimplifyList } from "entities/Form"
 import { memo, useCallback, useEffect, useState } from "react"
 import { DynamicModuleLoader, ReducersList } from "shared/lib/components/DynamicModuleLoader/DynamicModuleLoader"
-import { Page } from "widgets/Page/Page"
+import { Page } from "widgets/Page"
 import { formsListReducer } from "../model/slice/formsListSlice"
 import { useSelector } from "react-redux"
 import { getFormsListError, getFormsListForms, getFormsListIsLoading } from "../model/selectors/mainPageSelectors"
@@ -25,9 +25,11 @@ const MainPage = () => {
 		dispatch(initMainPage())
 	}, [])
 
-	const onOpenDeleteModal = useCallback((formId: string) => {
-		setIsOpenDeleteModal(true)
-		setDeleteFormId(formId)
+	const onOpenDeleteModal = useCallback((formId?: string) => {
+		if (formId) {
+			setIsOpenDeleteModal(true)
+			setDeleteFormId(formId)
+		}
 	}, [])
 
 	const onCloseDeleteModal = useCallback(() => {

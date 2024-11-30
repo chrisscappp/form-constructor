@@ -8,14 +8,16 @@ import { VStack } from "shared/ui/Stack"
 
 interface FormDetailCardCheckboxProps {
 	className?: string,
-	question?: FormQuestion
+	question?: FormQuestion,
+	readonly?: boolean
 }
 
 export const FormDetailCardCheckbox = memo((props: FormDetailCardCheckboxProps) => {
 	
 	const {
 		className,
-		question
+		question,
+		readonly
 	} = props
 
 	//@ts-ignore
@@ -45,6 +47,7 @@ export const FormDetailCardCheckbox = memo((props: FormDetailCardCheckboxProps) 
 				/>
 			)}
 			<Checkbox
+				readonly={readonly}
 				name={`form-checkbox-${question?.id}`}
 				items={checkboxItems}
 				className={cls.checkboxes}

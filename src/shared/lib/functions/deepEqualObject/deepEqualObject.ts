@@ -1,7 +1,11 @@
 export function deepEqualObject(obj1: any, obj2: any) {
-	if (obj1 === null || obj2 === null ) {
+	if (obj1 === null || obj2 === null) {
 		return 1
 	}
+
+    if (obj1 === undefined || obj2 === undefined) {
+        return false
+    }
 
     let keysObj1 = Object.keys(obj1)
     let keysObj2 = Object.keys(obj2)

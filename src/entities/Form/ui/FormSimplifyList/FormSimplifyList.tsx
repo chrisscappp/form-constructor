@@ -16,7 +16,7 @@ interface FormSimplifyListProps {
 	forms?: FormSimplify[],
 	isLoading?: boolean,
 	error?: string,
-	onOpenModalDelete: (formId: string) => void
+	onOpenModalDelete: (formId?: string) => void
 }
 
 export const FormSimplifyList = memo((props: FormSimplifyListProps) => {

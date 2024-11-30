@@ -23,7 +23,13 @@ export const fetchFormDetail = createAsyncThunk<
 
 		try {
     		const response = await extra.api.get<FormDetail>(`/getFormDetail/${id}`)
-			return response.data
+		// 	await extra.api
+        // .post("/getFormQuestions", {
+        //   formId: "5Q3ngzfpJiWrja6UvfAX",
+        //   questionIds: ["JroJiyRvwh5vb1iVuYEs", "ZeF5GwCTnAcRYeykulBU"],
+        // })
+        // .then((res) => console.log("res", res));
+		    return response.data
 		} catch (e) {
 			console.error(e)
 			return rejectWithValue("Произошла ошибка при загрузке данных о форме. Попробуйте обновить страницу...")

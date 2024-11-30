@@ -4,7 +4,8 @@ export type FormQuestionValueType = "string" | "number" // тип вводимо
 export interface FormQuestionAnswer {
 	value: string | number,
 	content: string,
-	fieldType: FormQuestionType
+	fieldType: FormQuestionType,
+	bindedQuestionIds?: string[],
 	id: number
 }
 

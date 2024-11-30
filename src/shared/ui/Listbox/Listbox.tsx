@@ -34,7 +34,7 @@ export function Listbox(props: ListboxProps) {
 		onChange,
 		defaultValue,
 		items,
-		readonly,
+		readonly = false,
 		value,
 		className,
 		direction = "bottom"
@@ -56,7 +56,7 @@ export function Listbox(props: ListboxProps) {
 					className={cls.triggerBtn}
 				>
 					<>
-						{value ?? defaultValue}
+						{(value === "") || (!value) ? defaultValue : value}
 						<ArrowDownUpIcon className={cls.icon}/>
 					</>
 				</Button>

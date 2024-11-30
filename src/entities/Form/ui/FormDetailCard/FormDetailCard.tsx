@@ -13,12 +13,15 @@ import { FormDetailCardCheckbox } from "../FormDetailCardCheckbox/FormDetailCard
 import { Loader } from "shared/ui/Loader/Loader"
 import { FormDetailCardListbox } from "../FormDetailCardListbox/FormDetailCardListbox"
 import { HStack, VStack } from "shared/ui/Stack"
+import { Button, ButtonTheme } from "shared/ui/Button/Button"
 
 interface FormDetailCardProps {
 	form?: FormDetail,
 	isLoading?: boolean,
 	error?: string,
 	className?: string,
+	readonly?: boolean,
+	onTestingForm?: () => void
 }
 
 export const FormDetailCard = memo((props: FormDetailCardProps) => {
@@ -27,25 +30,27 @@ export const FormDetailCard = memo((props: FormDetailCardProps) => {
 		className,
 		error,
 		form,
-		isLoading
+		isLoading,
+		onTestingForm,
+		readonly
 	} = props
 
 	const renderQuestionBlock = useCallback((question: FormQuestion) => {
 		switch(question.type) {
 			case "input": 
-				return <FormDetailCardInput key={question.id} className={cls.question} question={question}/>
+				return <FormDetailCardInput key={question.id} className={cls.question} question={question} readonly={readonly}/>
 			case "textarea":
-				return <FormDetailCardTextarea key={question.id} className={cls.question} question={question}/>
+				return <FormDetailCardTextarea key={question.id} className={cls.question} question={question} readonly={readonly}/>
 			case "radio": 
-				return <FormDetailCardRadio key={question.id} className={cls.question} question={question}/>
+				return <FormDetailCardRadio key={question.id} className={cls.question} question={question} readonly={readonly}/>
 			case "checkbox":
-				return <FormDetailCardCheckbox key={question.id} className={cls.question} question={question}/>
+				return <FormDetailCardCheckbox key={question.id} className={cls.question} question={question} readonly={readonly}/>
 			case "listbox":
-				return <FormDetailCardListbox key={question.id} className={cls.question} question={question}/>
+				return <FormDetailCardListbox key={question.id} className={cls.question} question={question} readonly={readonly}/>
 			default:
 				return null
 		}
-	}, [])
+	}, [readonly])
 
 	if (isLoading) {
 		return (
@@ -86,24 +91,26 @@ export const FormDetailCard = memo((props: FormDetailCardProps) => {
           				/>
 					)}
 				</VStack>
-				<VStack gap="4" className={cls.headerAdditional}>
-					<HStack gap="4">
-            			<CalendarIcon className={cls.calendar} />
-            			<Text text={form?.date} />
-          			</HStack>
-          			<HStack gap="4">
-            			<EyeIcon className={cls.eye} />
-            			<Text text={String(form?.filled || 0)} />
-          			</HStack>
-					<Text
-						text={`Количество вопросов: ${form?.questionCount || 0}`}
-						size={TextSize.M}
-					/>
-					<Text
-						text={`ID: ${form?.id || 0}`}
-						size={TextSize.M}
-					/>
+				{readonly && (
+					<VStack gap="4" className={cls.headerAdditional}>
+						<HStack gap="4">
+            				<CalendarIcon className={cls.calendar} />
+            				<Text text={form?.date} />
+          				</HStack>
+          				<HStack gap="4">
+            				<EyeIcon className={cls.eye} />
+            				<Text text={String(form?.filled || 0)} />
+          				</HStack>
+						<Text
+							text={`Количество вопросов: ${form?.questionCount || 0}`}
+							size={TextSize.M}
+						/>
+						<Text
+							text={`ID: ${form?.id || 0}`}
+							size={TextSize.M}
+						/>
 				</VStack>
+				)}
 			</HStack>
 			<VStack 
 				max
@@ -114,6 +121,13 @@ export const FormDetailCard = memo((props: FormDetailCardProps) => {
 					renderQuestionBlock(question)
 				)}	
 			</VStack>
+			<Button 
+				className={cls.testBtn} 
+				theme={readonly ? ButtonTheme.BACKGROUND : ButtonTheme.ERROR}
+				onClick={onTestingForm}
+			>
+				{readonly ? "Тест формы" : "Завершить"}
+			</Button>
 		</Card>
 	)
 })

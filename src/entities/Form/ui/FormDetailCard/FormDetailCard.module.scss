@@ -18,11 +18,24 @@
 	margin-top: 6px;
 }
 
+.testBtn {
+	width: 200px;
+	margin-top: 36px;
+	margin-left: auto;
+}
+
 @media (max-width: 1000px) {
 	.header {
 		display: block;
 	}
 	.headerAdditional {
 		margin-top: 20px;
+	}
+}
+
+@media (max-width: 768px) {
+	.testBtn {
+		width: 100%;
+		margin-left: 0;
 	}
 }

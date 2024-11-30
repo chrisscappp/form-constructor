@@ -44,13 +44,13 @@ export const InputRadioAnswer = memo((props: InputRadioAnswerProps) => {
 				size={ButtonSize.L} 
 				square 
 				className={classNames(cls.btn, {}, [cls.answerBtn])}
-				title="Удалить"
+				title="Удалить ответ"
 				onClick={() => onDelete(aIndex)}
 			>
 				-
 			</Button>
 			<Input
-				placeholder="Введите содержание вопроса..."
+				placeholder="Введите содержание ответа..."
 				value={radioValue}
 				onChange={onChangeValue}
 				onBlur={() => onChangeContent(radioValue, aIndex)}

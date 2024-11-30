@@ -3,14 +3,17 @@ import { FormPageSchema } from "../types/formPage"
 import { fetchFormDetail } from "../services/fetchFormDetail/fetchFormDetail"
 
 const initialState: FormPageSchema = {
-  	isLoading: false
-};
+  	isLoading: false,
+    readonly: true
+}
 
 const formDetailSlice = createSlice({
   name: "formDetailSlice",
   initialState,
   reducers: {
-    
+    setReadonly: (state, action: PayloadAction<boolean>) => {
+      state.readonly = action.payload
+    }
   },
   extraReducers: (builder) => {
   	builder
@@ -27,7 +30,7 @@ const formDetailSlice = createSlice({
         state.error = action.payload
       });
   },
-});
+})
 
 export const { reducer: formDetailReducer } = formDetailSlice
 export const { actions: formDetailActions } = formDetailSlice

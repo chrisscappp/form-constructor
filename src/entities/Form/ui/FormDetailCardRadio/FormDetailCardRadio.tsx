@@ -8,14 +8,16 @@ import cls from "./FormDetailCardRadio.module.scss"
 
 interface FormDetailCardRadioProps {
 	className?: string,
-	question?: FormQuestion
+	question?: FormQuestion,
+	readonly?: boolean
 }
 
 export const FormDetailCardRadio = memo((props: FormDetailCardRadioProps) => {
 	
 	const {
 		className,
-		question
+		question,
+		readonly
 	} = props
 
 	//@ts-ignore
@@ -45,6 +47,7 @@ export const FormDetailCardRadio = memo((props: FormDetailCardRadioProps) => {
 				/>
 			)}
 			<Radio
+				readonly={readonly}
 				name={`form-radio-${question?.id}`}
 				items={radioItems}
 				className={cls.radios}

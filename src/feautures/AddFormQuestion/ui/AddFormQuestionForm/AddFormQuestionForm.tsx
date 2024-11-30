@@ -134,7 +134,6 @@ const AddFormQuestionForm = (props: AddFormQuestionFormProps) => {
 							value={questionValueType?.value}
 							onChange={onChangeQuestionValueType}
 							items={selectFieldValueTypeOptions}
-							direction="top"
 						/>
 					</div>
 				</div>	

@@ -8,14 +8,16 @@ import { VStack } from "shared/ui/Stack"
 
 interface FormDetailCardListboxProps {
 	className?: string,
-	question?: FormQuestion
+	question?: FormQuestion,
+	readonly?: boolean
 }
 
 export const FormDetailCardListbox = memo((props: FormDetailCardListboxProps) => {
 	
 	const {
 		className,
-		question
+		question,
+		readonly
 	} = props
 
 	//@ts-ignore
@@ -23,11 +25,10 @@ export const FormDetailCardListbox = memo((props: FormDetailCardListboxProps) =>
 		return question?.answers?.map((answer) => {
 			return {
 				value: answer.value,
-				content: answer.content,
-				disabled: true
+				content: answer.content
 			}
 		})
-	}) 
+	}, [question])
 	
 	return (
 		<VStack 
@@ -45,6 +46,7 @@ export const FormDetailCardListbox = memo((props: FormDetailCardListboxProps) =>
 				/>
 			)}
 			<Listbox
+				readonly={readonly}
 				className={cls.list}
 				items={listboxItems}
 				onChange={() => {}}
