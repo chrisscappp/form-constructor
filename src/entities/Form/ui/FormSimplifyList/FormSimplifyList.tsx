@@ -5,7 +5,7 @@ import { FormSimplify } from "../../model/types/form"
 import { FormSimplifyListItem } from "../FormSimplifyListItem/FormSimplifyListItem"
 import { Loader } from "shared/ui/Loader/Loader"
 import { FormInstrumentPanel } from "../FormInstrumentPanel/FormInstrumentPanel"
-import { Text, TextAlign, TextSize, TextTheme } from "shared/ui/Text/Text"
+import { Text, TextAlign, TextSize } from "shared/ui/Text/Text"
 import { Button } from "shared/ui/Button/Button"
 import { useNavigate } from "react-router"
 import { routerPath } from "shared/config/routeConfig/routeConfig"
@@ -16,7 +16,8 @@ interface FormSimplifyListProps {
 	forms?: FormSimplify[],
 	isLoading?: boolean,
 	error?: string,
-	onOpenModalDelete: (formId?: string) => void
+	onOpenModalDelete: (formId?: string) => void,
+	onStartRelease: (form?: FormSimplify) => void
 }
 
 export const FormSimplifyList = memo((props: FormSimplifyListProps) => {
@@ -26,7 +27,8 @@ export const FormSimplifyList = memo((props: FormSimplifyListProps) => {
 		className,
 		error,
 		isLoading,
-		onOpenModalDelete
+		onOpenModalDelete,
+		onStartRelease
 	} = props
 
 	const navigate = useNavigate()
@@ -43,10 +45,12 @@ export const FormSimplifyList = memo((props: FormSimplifyListProps) => {
 				<FormSimplifyListItem
 					form={item}
 					className={cls.form}
+					onStartRelease={onStartRelease}
 				/>
 				<FormInstrumentPanel
 					formId={item.id}
 					formLink={item.formLink}
+					formIsRelease={item.isRealized}
 					onOpenModalDelete={onOpenModalDelete}
 					className={cls.panel}
 				/>

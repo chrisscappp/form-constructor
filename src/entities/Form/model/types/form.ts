@@ -29,7 +29,8 @@ export interface FormSimplify {
 	description?: string,
 	date: string,
 	filled: number,
-	formLink: string
+	formLink: string,
+	isRealized: boolean
 }
 
 export interface FormDetail extends FormSimplify {

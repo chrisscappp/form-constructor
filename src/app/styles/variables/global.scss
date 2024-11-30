@@ -52,6 +52,7 @@
 	--grey-light: #B7B7B7;
 	--grey-dark: #7f7f7f;
 	--error-color: rgb(255, 70, 70);
+	--text-blue: #001DC2;
 
 	--bg-color: #FAFAFA;
 	--inverted-bg-color: #191919;
@@ -69,4 +70,8 @@
 
 	// Listbox
 	--listbox-options-bg: #eaeaea;
+
+	// Card
+	--card-bg: rgb(240, 240, 240);
+	--card-bg-active: #e5e1fe;
 }

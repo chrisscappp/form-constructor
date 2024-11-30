@@ -1,12 +1,13 @@
 import { classNames } from "shared/lib/classNames/classNames"
 import cls from "./Text.module.scss"
-import { memo } from "react";
+import { memo } from "react"
 
 export enum TextTheme {
 	PRIMARY = "primary",
 	SECONDARY = "secondary",
 	GREY = "grey",
-	ERROR = "error"
+	ERROR = "error",
+	SUCCESS = "success"
 }
 
 export enum TextSize {

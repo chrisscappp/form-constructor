@@ -37,6 +37,7 @@ export const createNewForm = createAsyncThunk<
 			formLink: "",
 			title: form?.title || "",
 			description: form?.description || "",
+			isRealized: false
 		}
 
 		try {

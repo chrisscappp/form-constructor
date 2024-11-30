@@ -1,4 +1,4 @@
-import { ConfirmEditingFormModal } from "feautures/ConfrimEditingForm"
+import { ConfirmActionModal } from "feautures/ConfirmAction"
 import { FormEditPageHeader } from "./FormEditPageHeader/FormEditPageHeader"
 import { memo, useCallback, useEffect, useState } from "react"
 import { Page } from "widgets/Page"
@@ -65,7 +65,7 @@ const FormEditPage = () => {
 				/>
 			</VStack>
 			{isOpenConfirmModal && (
-				<ConfirmEditingFormModal
+				<ConfirmActionModal
 					isOpen={isOpenConfirmModal}
 					onClose={onCloseConfirmModal}
 					callback={onUpdateForm}

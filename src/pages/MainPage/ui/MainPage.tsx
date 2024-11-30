@@ -1,4 +1,4 @@
-import { FormSimplifyList } from "entities/Form"
+import { FormSimplify, FormSimplifyList } from "entities/Form"
 import { memo, useCallback, useEffect, useState } from "react"
 import { DynamicModuleLoader, ReducersList } from "shared/lib/components/DynamicModuleLoader/DynamicModuleLoader"
 import { Page } from "widgets/Page"
@@ -8,6 +8,7 @@ import { getFormsListError, getFormsListForms, getFormsListIsLoading } from "../
 import { useAppDispatch } from "shared/lib/hooks/useAppDispatch"
 import { DeleteFormModal } from "feautures/DeleteForm"
 import { initMainPage } from "../model/services/initMainPage/initMainPage"
+import { ReleaseForm } from "feautures/ReleaseForm"
 
 const reducers: ReducersList = {
 	forms: formsListReducer
@@ -18,8 +19,10 @@ const MainPage = () => {
 	const forms = useSelector(getFormsListForms)
 	const isLoading = useSelector(getFormsListIsLoading)
 	const error = useSelector(getFormsListError)
-	const [isOpenDeleteModal, setIsOpenDeleteModal] = useState(false)
-	const [deleteFormId, setDeleteFormId] = useState("")
+	const [ isOpenDeleteModal, setIsOpenDeleteModal ] = useState(false)
+	const [ isOpenConfirmModal, setIsOpenConfirmModal ] = useState(false)
+	const [ formId, setFormId ] = useState("")
+	const [ form, setForm ] = useState<FormSimplify>()
 
 	useEffect(() => {
 		dispatch(initMainPage())
@@ -28,13 +31,25 @@ const MainPage = () => {
 	const onOpenDeleteModal = useCallback((formId?: string) => {
 		if (formId) {
 			setIsOpenDeleteModal(true)
-			setDeleteFormId(formId)
+			setFormId(formId)
 		}
 	}, [])
 
 	const onCloseDeleteModal = useCallback(() => {
 		setIsOpenDeleteModal(false)
-		setDeleteFormId("")
+		setFormId("")
+	}, [])
+
+	const onStartRelease = useCallback((form?: FormSimplify) => {
+		if (form) {
+			setIsOpenConfirmModal(true)
+			setForm(form)
+		}
+	}, [])
+
+	const onFinishRelease = useCallback(() => {
+		setIsOpenConfirmModal(false)
+		setForm(undefined)
 	}, [])
 
 	return (
@@ -45,12 +60,18 @@ const MainPage = () => {
 					isLoading={isLoading}
 					error={error}
 					onOpenModalDelete={onOpenDeleteModal}
+					onStartRelease={onStartRelease}
+				/>
+				<ReleaseForm
+					isOpen={isOpenConfirmModal}
+					onClose={onFinishRelease}
+					form={form}
 				/>
 				{isOpenDeleteModal && (
 					<DeleteFormModal
 						isOpen={isOpenDeleteModal}
 						onClose={onCloseDeleteModal}
-						deleteFormId={deleteFormId}
+						deleteFormId={formId}
 					/>
 				)}
 			</Page>

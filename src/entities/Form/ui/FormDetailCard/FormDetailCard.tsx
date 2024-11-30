@@ -1,9 +1,9 @@
 import { Card } from "shared/ui/Card/Card"
 import { FormDetail, FormQuestion } from "../../model/types/form"
 import { memo, useCallback } from "react"
-import { classNames } from "shared/lib/classNames/classNames"
+import { classNames, Mods } from "shared/lib/classNames/classNames"
 import cls from "./FormDetailCard.module.scss"
-import { Text, TextAlign, TextSize } from "shared/ui/Text/Text"
+import { Text, TextAlign, TextSize, TextTheme } from "shared/ui/Text/Text"
 import CalendarIcon from "shared/assets/icons/calendar-icon.svg"
 import EyeIcon from "shared/assets/icons/eye-icon.svg"
 import { FormDetailCardInput } from "../FormDetailCardInput/FormDetailCardInput"
@@ -21,7 +21,8 @@ interface FormDetailCardProps {
 	error?: string,
 	className?: string,
 	readonly?: boolean,
-	onTestingForm?: () => void
+	onTestingForm?: () => void,
+	onStartReleaseForm?: () => void
 }
 
 export const FormDetailCard = memo((props: FormDetailCardProps) => {
@@ -32,6 +33,7 @@ export const FormDetailCard = memo((props: FormDetailCardProps) => {
 		form,
 		isLoading,
 		onTestingForm,
+		onStartReleaseForm,
 		readonly
 	} = props
 
@@ -75,8 +77,12 @@ export const FormDetailCard = memo((props: FormDetailCardProps) => {
 		)
 	}
 
+	const mods: Mods = {
+		[cls.releaseForm]: form?.isRealized ?? false
+	}
+
 	return (
-		<Card className={classNames(cls.FormCard, {}, [className])}>
+		<Card className={classNames(cls.FormCard, mods, [className])}>
 			<HStack 
 				className={cls.header} 
 				justify="between"
@@ -90,6 +96,14 @@ export const FormDetailCard = memo((props: FormDetailCardProps) => {
             				size={TextSize.L}
           				/>
 					)}
+					{form?.isRealized && (
+            			<Text
+              				className={cls.release}
+              				text="Форма доступна для прохождения!"
+              				theme={TextTheme.SUCCESS}
+              				size={TextSize.ML}
+            			/>
+          			)}
 				</VStack>
 				{readonly && (
 					<VStack gap="4" className={cls.headerAdditional}>
@@ -121,13 +135,23 @@ export const FormDetailCard = memo((props: FormDetailCardProps) => {
 					renderQuestionBlock(question)
 				)}	
 			</VStack>
-			<Button 
-				className={cls.testBtn} 
-				theme={readonly ? ButtonTheme.BACKGROUND : ButtonTheme.ERROR}
-				onClick={onTestingForm}
-			>
-				{readonly ? "Тест формы" : "Завершить"}
-			</Button>
+			<HStack className={cls.btns} align="end" gap="12" justify="end">
+				<Button
+            		className={cls.realiseBtn}
+            		onClick={onStartReleaseForm}
+          		>
+            		{form?.isRealized
+              			? "Закрыть для прохождения"
+              			: "Открыть для прохождения"}
+          		</Button>
+				<Button 
+					className={cls.testBtn} 
+					theme={readonly ? ButtonTheme.BACKGROUND : ButtonTheme.ERROR}
+					onClick={onTestingForm}
+				>
+					{readonly ? "Тест формы" : "Завершить"}
+				</Button>
+			</HStack>
 		</Card>
 	)
 })

@@ -6,6 +6,7 @@ import { useNavigate } from "react-router"
 import { FormDetail, FormInstrumentPanel } from "entities/Form"
 import { HStack } from "shared/ui/Stack"
 import { Text, TextSize } from "shared/ui/Text/Text"
+import { routerPath } from "shared/config/routeConfig/routeConfig"
 
 interface FormPageHeaderProps {
 	className?: string,
@@ -25,8 +26,8 @@ export const FormPageHeader = memo((props: FormPageHeaderProps) => {
 
 	const navigate = useNavigate()
 
-	const onGoBack = useCallback(() => {
-		navigate(-1)
+	const onGoToMain = useCallback(() => {
+		navigate(routerPath.main)
 	}, [])
 
 	return (
@@ -36,7 +37,7 @@ export const FormPageHeader = memo((props: FormPageHeaderProps) => {
 			max
 		>
       		<Button
-        		onClick={onGoBack}
+        		onClick={onGoToMain}
         		theme={ButtonTheme.CLEAR}
         		className={cls.backBtn}
       		>

@@ -37,12 +37,12 @@ export const updateForm = createAsyncThunk<
 			formLink: form?.formLink || "",
 			title: form?.title || "",
 			description: form?.description || "",
-			id: form?.id || ""
+			id: form?.id || "",
+			isRealized: false
 		}
 
 		try {
 			const response = await extra.api.put<FormDetail>(`/updateFormData/${form?.id}`, formDetail)
-			console.log('res', response.data)
 			if (!response.data) {
 				throw new Error()
 			}

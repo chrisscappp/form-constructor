@@ -29,7 +29,8 @@ export const initFormEditFeauture = createAsyncThunk<void, InitFormEditPageProps
 				questions: [],
 				title: "",
 				description: "",
-				id: generateUniqueId()
+				id: generateUniqueId(),
+				isRealized: false
 			}))
 		} else {
 			const formDetail = localStorage.getItem(FORM_DETAIL_DATA)

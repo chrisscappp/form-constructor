@@ -12,6 +12,7 @@ import { formDetailActions, formDetailReducer } from "../model/slice/formPageSli
 import { useAppDispatch } from "shared/lib/hooks/useAppDispatch"
 import { fetchFormDetail } from "../model/services/fetchFormDetail/fetchFormDetail"
 import { VStack } from "shared/ui/Stack"
+import { ReleaseForm } from "feautures/ReleaseForm"
 
 const reducers: ReducersList = {
 	formDetail: formDetailReducer
@@ -25,7 +26,8 @@ const FormPage = () => {
 	const isLoading = useSelector(getFormPageIsLoading)
 	const error = useSelector(getFormPageError)
 	const readonly = useSelector(getFormPageReadonly)
-	const [isOpenDeleteModal, setIsOpenDeleteModal] = useState(false)
+	const [ isOpenDeleteModal, setIsOpenDeleteModal ] = useState(false)
+	const [ isOpenConfirmModal, setIsOpenConfirmModal ] = useState(false)
 	
 	useEffect(() => {
 		dispath(fetchFormDetail({ id: id ?? "0" }))
@@ -41,6 +43,16 @@ const FormPage = () => {
 
 	const onCloseDeleteModal = useCallback(() => {
 		setIsOpenDeleteModal(false)
+	}, [])
+
+	const onStartReleaseForm = useCallback(() => {
+		if (form) {
+			setIsOpenConfirmModal(true)
+		}
+	}, [form])
+
+	const onFinishRelease = useCallback(() => {
+		setIsOpenConfirmModal(false)
 	}, [])
 
 	const onTestingForm = useCallback(() => {
@@ -65,8 +77,14 @@ const FormPage = () => {
 						error={error}
 						readonly={readonly}
 						onTestingForm={onTestingForm}
+						onStartReleaseForm={onStartReleaseForm}
 					/>
 				</VStack>
+				<ReleaseForm
+					isOpen={isOpenConfirmModal}
+					onClose={onFinishRelease}
+					form={form}
+				/>
 				{isOpenDeleteModal && (
 					<DeleteFormModal
 						isOpen={isOpenDeleteModal}

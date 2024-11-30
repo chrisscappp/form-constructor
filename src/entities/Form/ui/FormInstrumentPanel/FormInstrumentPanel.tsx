@@ -16,7 +16,8 @@ interface FormInstrumentPanelProps {
 	className?: string,
   formId?: string,
   formLink?: string,
-  formDetail?: FormDetail
+  formDetail?: FormDetail,
+  formIsRelease?: boolean,
 	onOpenModalDelete: (formId?: string) => void,
 }
 
@@ -27,11 +28,13 @@ export const FormInstrumentPanel = memo((props: FormInstrumentPanelProps) => {
     formDetail,
     formId,
     formLink,
+    formIsRelease,
 		onOpenModalDelete
 	} = props
 
   const navigate = useNavigate()
   const location = useLocation()
+  const isRelease = formDetail ? formDetail.isRealized : formIsRelease ? formIsRelease : false
 
   const onFollowToEditForm = useCallback(() => {
     if (formDetail && location.pathname === routerPath.form + formDetail.id) {
@@ -45,20 +48,14 @@ export const FormInstrumentPanel = memo((props: FormInstrumentPanelProps) => {
   const onCopyFormLink = useCallback(() => {
     if (formDetail?.formLink) {
       navigator.clipboard.writeText(formDetail.formLink)
+    } else if (formLink) {
+      navigator.clipboard.writeText(formLink)
     }
   }, [formDetail])
 	
 	return (
     <Card className={classNames(cls.FormInstrumentPanel, {}, [className])}>
       <HStack justify="around" className={cls.panel}>
-        <Button
-          title="Редактировать"
-          theme={ButtonTheme.CLEAR}
-          className={cls.iconWrap}
-          onClick={onFollowToEditForm}
-        >
-          <FormEditIcon className={cls.icon} />
-        </Button>
         <Button
           title="Копировать ссылку на форму"
           theme={ButtonTheme.CLEAR}
@@ -68,9 +65,19 @@ export const FormInstrumentPanel = memo((props: FormInstrumentPanelProps) => {
           <LinkIcon className={cls.icon} />
         </Button>
         <Button
+          title="Редактировать"
+          theme={ButtonTheme.CLEAR}
+          className={cls.iconWrap}
+          disabled={isRelease}
+          onClick={onFollowToEditForm}
+        >
+          <FormEditIcon className={cls.icon} />
+        </Button>
+        <Button
           title="Удалить"
           theme={ButtonTheme.CLEAR}
           className={cls.iconWrap}
+          disabled={isRelease}
           onClick={() => onOpenModalDelete(formId)}
         >
           <TrashIcon className={cls.icon} />

@@ -10,6 +10,14 @@
 	height: 24px;
 }
 
+.release {
+	margin-top: 12px;
+}
+
+.releaseForm {
+	background: var(--card-bg-active) !important;
+}
+
 .questions {
 	margin-top: 20px;
 }
@@ -20,8 +28,10 @@
 
 .testBtn {
 	width: 200px;
-	margin-top: 36px;
-	margin-left: auto;
+}
+
+.btns {
+	margin-top: 32px;
 }
 
 @media (max-width: 1000px) {
@@ -36,6 +46,12 @@
 @media (max-width: 768px) {
 	.testBtn {
 		width: 100%;
-		margin-left: 0;
+	}
+	.btns {
+		flex-direction: column;
+		width: 100%;
+	}
+	.realiseBtn {
+		width: 100%;
 	}
 }
