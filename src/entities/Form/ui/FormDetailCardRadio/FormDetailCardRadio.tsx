@@ -20,14 +20,13 @@ export const FormDetailCardRadio = memo((props: FormDetailCardRadioProps) => {
 		readonly
 	} = props
 
-	//@ts-ignore
-	const radioItems: RadioItem[] = useMemo(() => {
+	const radioItems = useMemo(() => {
 		return question?.answers?.map((item) => {
 			return {
 				id: item?.id,
 				value: item?.value,
 				content: item?.content
-			}
+			} as RadioItem
 		})
 	}, [])
 
@@ -52,6 +51,12 @@ export const FormDetailCardRadio = memo((props: FormDetailCardRadioProps) => {
 				items={radioItems}
 				className={cls.radios}
 			/>
+			{question && question.bindedAnswerIds?.length > 0 && (
+				<Text
+					text="*вопрос связан с одним из ответов"
+					className={cls.bindHint}
+				/>
+			)}
 		</VStack>
 	)
 })

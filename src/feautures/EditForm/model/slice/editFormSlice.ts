@@ -70,7 +70,8 @@ const editFormSlice = createSlice({
           content: "",
           fieldType,
           value: "",
-          id: question.answers.length + 1
+          id: question.answers.length + 1,
+          bindedQuestionIds: []
         })
       }
     },
@@ -139,45 +140,64 @@ const editFormSlice = createSlice({
     bindAnswerWithQuestion: (
       state, 
       action: PayloadAction<{ 
-        questionBindIds: string[], 
-        questionOriginIndex: number, 
-        questionAnswerIndex: number 
+        qBindId: string, 
+        aBindId: string,
+        qOriginIndex: number, 
+        qAnswerIndex: number 
       }>) => {
-        const { questionBindIds, questionOriginIndex, questionAnswerIndex } = action.payload
-        
-        if (state.form?.questions[questionOriginIndex].answers?.[questionAnswerIndex]) {
-          //@ts-ignore
-          const answer: FormQuestionAnswer = JSON.parse(JSON.stringify(state.form.questions[questionOriginIndex].answers[questionAnswerIndex]))
-          if (!isAnswerShowQuestion(answer)) {
-            answer.bindedQuestionIds = []
-          }
-          if (JSON.stringify(answer.bindedQuestionIds) !== JSON.stringify(questionBindIds)) {
+        const { qBindId, aBindId, qOriginIndex, qAnswerIndex } = action.payload
+        if (
+          state.form?.questions[qOriginIndex] &&
+          state.form?.questions[qOriginIndex].answers?.[qAnswerIndex] &&
+          qBindId &&
+          aBindId
+        ) {
+          const bindQuestion = state.form?.questions.find(question => String(question.id) === qBindId)
+          if (bindQuestion) {
+            const bindQuestionIndex = state.form.questions.indexOf(bindQuestion)
+            const answer = state.form?.questions[qOriginIndex].answers?.[qAnswerIndex]
+
+            if (bindQuestionIndex !== -1 && answer) {
+              if (answer.bindedQuestionIds?.indexOf(qBindId) === -1) {
+                answer.bindedQuestionIds.push(qBindId)
+              }
+              state.form.questions[bindQuestionIndex].bindedAnswerIds.push(aBindId)
+            }
+
             //@ts-ignore
-            answer.bindedQuestionIds = questionBindIds
-            //@ts-ignore
-            state.form.questions[questionOriginIndex].answers[questionAnswerIndex] = answer
+            state.form.questions[qOriginIndex].answers[qAnswerIndex] = answer
           }
         }
     },
-    unbindAnswerFromQuestion: (
+    unbindAnswerWithQuestion: (
       state, 
       action: PayloadAction<{ 
-        questionBindId: string, 
-        questionOriginIndex: number, 
-        questionAnswerIndex: number 
+        qBindId: string, 
+        aBindId: string,
+        qOriginIndex: number, 
+        qAnswerIndex: number 
       }>) => {
-        const { questionBindId, questionOriginIndex, questionAnswerIndex } = action.payload
+        const { qBindId, aBindId, qOriginIndex, qAnswerIndex } = action.payload
+        if (
+          state.form?.questions[qOriginIndex] &&
+          state.form?.questions[qOriginIndex].answers?.[qAnswerIndex] &&
+          qBindId &&
+          aBindId
+        ) {
+          const bindQuestion = state.form?.questions.find(question => String(question.id) === qBindId)
+          if (bindQuestion) {
+            const bindQuestionIndex = state.form.questions.indexOf(bindQuestion)
+            const answer = state.form?.questions[qOriginIndex].answers?.[qAnswerIndex]
 
-        if (state.form?.questions[questionOriginIndex].answers?.[questionAnswerIndex]) {
-          //@ts-ignore
-          const answer: FormQuestionAnswer = JSON.parse(JSON.stringify(state.form.questions[questionOriginIndex].answers[questionAnswerIndex]))
-          // if (!isAnswerShowQuestion(answer)) {
-          //   answer.bindedQuestionIds = []
-          // }
-          const filterAnswerBindIds = answer.bindedQuestionIds?.filter(id => id !== questionBindId)
-          answer.bindedQuestionIds = filterAnswerBindIds
-          //@ts-ignore
-          state.form.questions[questionOriginIndex].answers[questionAnswerIndex] = answer
+            if (bindQuestionIndex !== -1 && answer) {
+              if (answer.bindedQuestionIds?.indexOf(qBindId) !== -1) {
+                const filteredQuestionIds = answer.bindedQuestionIds.filter(id => id !== qBindId)
+                answer.bindedQuestionIds = filteredQuestionIds
+              }
+              const filteredAnswerIds = state.form.questions[bindQuestionIndex].bindedAnswerIds.filter(id => id !== aBindId)
+              state.form.questions[bindQuestionIndex].bindedAnswerIds = filteredAnswerIds
+            }
+          }
         }
     },
     undoChangesForForm: (state) => {
@@ -206,7 +226,8 @@ const editFormSlice = createSlice({
             valueType: questionValueType,
             answers: [],
             id: questionsCount + 1,
-            formId: state.form.id
+            formId: state.form.id,
+            bindedAnswerIds: []
           })
         }
         state.form.questionCount += questionsCount

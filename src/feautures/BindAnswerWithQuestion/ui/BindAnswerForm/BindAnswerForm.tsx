@@ -1,16 +1,16 @@
-import { memo, useCallback, useEffect, useState } from "react"
+import { memo, useCallback, useEffect } from "react"
 import cls from "./BindAnswerForm.module.scss"
 import { classNames } from "shared/lib/classNames/classNames"
 import { Text, TextSize, TextTheme } from "shared/ui/Text/Text"
 import { Form } from "shared/ui/Form/Form"
 import { useSelector } from "react-redux"
-import { editFormActions, fieldTypeTranslate } from "feautures/EditForm"
-import { Button, ButtonTheme } from "shared/ui/Button/Button"
+import { editFormActions } from "feautures/EditForm"
+import { Button } from "shared/ui/Button/Button"
 import { HStack } from "shared/ui/Stack"
 import { useAppDispatch } from "shared/lib/hooks/useAppDispatch"
 import { initBindAnswerForm } from "../../model/services/initBindAnswerForm/initBindAnswerForm"
 import { getBindAnswerFormBindedAnswer, getBindAnswerFormError, getBindAnswerFormQuestions } from "../../model/selectors/bindAnswerSelectors"
-import { Checkbox, CheckboxItem } from "shared/ui/CheckBox/CheckBox"
+import { bindAnswerActions } from "feautures/BindAnswerWithQuestion/model/slices/bindAnswerSlice"
 import { InstrumentPanel } from "../InstumentPanel/InstrumentPanel"
 
 export interface BindAnswerFormProps {
@@ -34,12 +34,8 @@ const BindAnswerForm = (props: BindAnswerFormProps) => {
 	const dispatch = useAppDispatch()
 	const questions = useSelector(getBindAnswerFormQuestions)
 	const error = useSelector(getBindAnswerFormError)
-	const bindedAnswer = useSelector(getBindAnswerFormBindedAnswer)
-	const [questionBindIds, setQuestionBindIds] = useState<string[]>([])
-	const [activeCheckboxItems, setActiveCheckboxItems] = useState<CheckboxItem[]>([])
+	const answer = useSelector(getBindAnswerFormBindedAnswer)
 	const isHasNeedProps = excludeQuestionIndex !== undefined && bindAnswerIndex !== undefined
-
-	// global TODO - вынести бизнес логику в стор
 
 	useEffect(() => {
 		if (isHasNeedProps) {
@@ -48,25 +44,10 @@ const BindAnswerForm = (props: BindAnswerFormProps) => {
 				bindAIndex: bindAnswerIndex
 			}))
 		}
-	}, [isHasNeedProps, formId, bindedAnswer])
-
-	useEffect(() => {
-		if (questions && bindedAnswer) {
-			const activeItems = questions.map((question) => {
-				const findId = bindedAnswer.bindedQuestionIds?.find(id => id === String(question.id)) 
-				if (findId) {
-					return {
-						id: question.id,
-						value: question.id,
-						title: question.title
-					} as unknown as CheckboxItem
-				}
-			}).filter(item => item !== undefined)
-			//@ts-ignore
-			setActiveCheckboxItems(activeItems)
-			setQuestionBindIds(bindedAnswer.bindedQuestionIds ?? [])
+		return () => {
+			dispatch(bindAnswerActions.clearState())
 		}
-	}, [questions, bindedAnswer])
+	}, [isHasNeedProps, formId, answer])
 
 	const onKeyDown = useCallback((e: KeyboardEvent) => {
 		if (e.key === "esc") {
@@ -81,44 +62,29 @@ const BindAnswerForm = (props: BindAnswerFormProps) => {
 		}
 	}, [onKeyDown])
 
-	const onBuildBindedQuestions = useCallback((bindItem: CheckboxItem) => {
-		const bindItemId = String(bindItem.id)
-		const findItemIndex = questionBindIds.indexOf(bindItemId)
-		if (findItemIndex === -1) {
-			setQuestionBindIds([...questionBindIds, bindItemId])
-			setActiveCheckboxItems([...activeCheckboxItems, bindItem])
-		} else {
-			const copyIds = [...questionBindIds]
-			copyIds.splice(findItemIndex, 1)
-			setQuestionBindIds([...copyIds])
-			const copyActive = [...activeCheckboxItems]
-			copyActive.splice(findItemIndex, 1)
-			setActiveCheckboxItems([...copyActive])
-			// todo - оптимизировать
-		}
-	}, [questionBindIds, activeCheckboxItems])
-
-	const onBindAnswerWithQuestion = useCallback(() => {
+	const onBindAnswerWithQuestion = useCallback((qId: string) => {
 		if (isHasNeedProps) {
+			dispatch(bindAnswerActions.addBindQuestionId(qId))
 			dispatch(editFormActions.bindAnswerWithQuestion({
-				questionBindIds,
-				questionOriginIndex: excludeQuestionIndex,
-				questionAnswerIndex: bindAnswerIndex
+				qBindId: qId,
+				aBindId: String(answer?.id),
+				qOriginIndex: excludeQuestionIndex,
+				qAnswerIndex: bindAnswerIndex
 			}))
-			onClose?.()
 		}
-	}, [questionBindIds, isHasNeedProps])
+	}, [isHasNeedProps, answer])
 
-	const checkboxItems = questions?.map((question) => {
-		return {
-			id: question.id,
-			content: `${question.title} | ${fieldTypeTranslate[question.type]}`,
-			value: question.id
-		} as unknown as CheckboxItem
-	})
-
-	console.log('active', activeCheckboxItems)
-	console.log('bind ids', questionBindIds)
+	const onUnbindAnswerWithQuestion = useCallback((qId: string) => {
+		if (isHasNeedProps) {
+			dispatch(bindAnswerActions.removeBindQuestionId(qId))
+			dispatch(editFormActions.unbindAnswerWithQuestion({
+				qBindId: qId,
+				aBindId: String(answer?.id),
+				qOriginIndex: excludeQuestionIndex,
+				qAnswerIndex: bindAnswerIndex
+			}))
+		}
+	}, [isHasNeedProps, answer])
 
 	return (
 		<Form className = {classNames('', {}, [className])}>
@@ -139,18 +105,20 @@ const BindAnswerForm = (props: BindAnswerFormProps) => {
 				text={"Это означает, что при выбранном варианте ответа, далее будет показан конкретный вопрос, или несколько вопросов"}
 				size={TextSize.M}
 			/>
-			<Checkbox
-				className={cls.list}
-				name="binded-questions"
-				items={checkboxItems}
-				activeItems={activeCheckboxItems}
-				readonly={false}
-				onChange={onBuildBindedQuestions}
-				additionalContent={<InstrumentPanel/>}
-			/>
+			<div className={cls.list}>
+				{questions?.map((question) => (
+					<InstrumentPanel
+						className={cls.question}
+						key={question.id}
+						answer={answer}
+						question={question}
+						onBind={onBindAnswerWithQuestion}
+						onUnbind={onUnbindAnswerWithQuestion}
+					/>
+				))}
+			</div>
 			<HStack className={cls.btns} justify="start" gap="12">
-				<Button onClick={onBindAnswerWithQuestion}>Привязать</Button>
-				<Button theme={ButtonTheme.ERROR} onClick={onClose}>Отмена</Button>
+				<Button onClick={onClose} className={cls.doneBtn}>Готово</Button>
 			</HStack>
 		</Form>
 	)

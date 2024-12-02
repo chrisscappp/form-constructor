@@ -20,14 +20,13 @@ export const FormDetailCardCheckbox = memo((props: FormDetailCardCheckboxProps) 
 		readonly
 	} = props
 
-	//@ts-ignore
-	const checkboxItems: CheckboxItem[] = useMemo(() => {
+	const checkboxItems = useMemo(() => {
 		return question?.answers?.map((item) => {
 			return {
 				id: item.id,
 				value: item.value,
 				content: item.content
-			}
+			} as CheckboxItem
 		})
 	}, [])
 
@@ -52,6 +51,12 @@ export const FormDetailCardCheckbox = memo((props: FormDetailCardCheckboxProps) 
 				items={checkboxItems}
 				className={cls.checkboxes}
 			/>
+			{question && question.bindedAnswerIds?.length > 0 && (
+				<Text
+					text="*вопрос связан с одним из ответов"
+					className={cls.bindHint}
+				/>
+			)}
 		</VStack>
 	)
 })

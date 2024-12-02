@@ -160,6 +160,12 @@ export const EditFormCardInput = memo((props: EditFormCardInputProps) => {
         			/>
       			)}
 			</VStack>
+			{question && question.bindedAnswerIds?.length > 0 && (
+				<Text
+					text="*вопрос связан с одним из ответов"
+					className={cls.bindHint}
+				/>
+			)}
     </VStack>
   )
 })

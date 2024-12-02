@@ -8,17 +8,24 @@ import { useAppDispatch } from "shared/lib/hooks/useAppDispatch"
 import cls from "./FormEditPage.module.scss"
 import { EditForm, initFormEditFeauture, updateForm } from "feautures/EditForm"
 import { VStack } from "shared/ui/Stack"
+import { useStore } from "react-redux"
+import { ReduxStoreWithManager } from "app/providers/StoreProvider/config/types"
 
 const FormEditPage = () => {
 	const { id } = useParams<{ id: string }>()
 	const navigate = useNavigate()
 	const location = useLocation()
 	const dispatch = useAppDispatch()
+	const store = useStore() as unknown as ReduxStoreWithManager
 	const [ isOpenConfirmModal, setIsOpenConfirmModal ] = useState(false)
 	const isCreateFormRoute = location.pathname === "/form/create"
 
 	useEffect(() => {
 		dispatch(initFormEditFeauture(isCreateFormRoute ? { id: "0" } : { id: id ?? "0" }))
+		return () => {
+			store.reducerManager.remove("bindAnswerForm")
+      		dispatch({ type: "@REMOVE bindAnswerForm Reducer" })
+		}
 	}, [isCreateFormRoute])
 
 	const onUndoChanges = useCallback(() => {

@@ -220,6 +220,12 @@ export const EditFormCardRadio = memo((props: EditFormCardRadioProps) => {
 			>
 				+
 			</Button>
+			{question && question.bindedAnswerIds?.length > 0 && (
+				<Text
+					text="*вопрос связан с одним из ответов"
+					className={cls.bindHint}
+				/>
+			)}
 			{isShowBindModal && (
 				<BindAnswerWithQuestionModal
 					isOpen={isShowBindModal}

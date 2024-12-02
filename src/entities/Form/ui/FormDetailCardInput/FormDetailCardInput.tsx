@@ -2,7 +2,7 @@ import { memo } from "react"
 import cls from "./FormDetailCardInput.module.scss"
 import { classNames } from "shared/lib/classNames/classNames"
 import { Text, TextSize } from "shared/ui/Text/Text"
-import { FormQuestion, FormQuestionAnswer } from "../../model/types/form"
+import { FormQuestion } from "../../model/types/form"
 import { Input } from "shared/ui/Input/Input"
 import { VStack } from "shared/ui/Stack"
 
@@ -40,6 +40,12 @@ export const FormDetailCardInput = memo((props: FormDetailCardInputProps) => {
 				readonly={readonly}
 				className={cls.inputField}
 			/>
+			{question && question.bindedAnswerIds?.length > 0 && (
+				<Text
+					text="*вопрос связан с одним из ответов"
+					className={cls.bindHint}
+				/>
+			)}
 		</VStack>
 	)
 })

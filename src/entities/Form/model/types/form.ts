@@ -5,7 +5,7 @@ export interface FormQuestionAnswer {
 	value: string | number,
 	content: string,
 	fieldType: FormQuestionType,
-	bindedQuestionIds?: string[],
+	bindedQuestionIds: string[],
 	id: number
 }
 
@@ -18,7 +18,8 @@ export interface FormQuestion {
 	valueType: FormQuestionValueType,
 	inputPlaceholder?: string,
 	answers?: FormQuestionAnswer[],
-	activeAnswer?: FormQuestionAnswer | FormQuestionAnswer[]
+	activeAnswer?: FormQuestionAnswer | FormQuestionAnswer[],
+	bindedAnswerIds: string[]
 }
 // answers - есть если checkbox или radio
 

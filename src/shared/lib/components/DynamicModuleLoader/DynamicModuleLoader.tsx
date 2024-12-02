@@ -1,5 +1,6 @@
 import { Reducer } from "@reduxjs/toolkit"
 import { StateSchemaKey } from "app/providers/StoreProvider"
+import { ReduxStoreWithManager } from "app/providers/StoreProvider/config/types"
 import { FC, ReactNode, useEffect } from "react"
 import { useStore, useDispatch } from "react-redux"
 
@@ -21,8 +22,7 @@ export const DynamicModuleLoader: FC<DynamicModuleLoaderProps> = (props) => {
 		removeAfterUnmount = false
 	} = props
 
-	//@ts-ignore
-	const store = useStore() as ReduxStoreWithManager
+	const store = useStore() as unknown as ReduxStoreWithManager
 	const dispatch = useDispatch()
 
 	useEffect(() => {

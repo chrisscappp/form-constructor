@@ -1,5 +1,5 @@
 import { classNames } from "shared/lib/classNames/classNames"
-import { Suspense } from "react"
+import { Suspense, useEffect } from "react"
 import { Modal } from "shared/ui/Modal/Modal"
 import { BindAnswerFormAsync } from "../BindAnswerForm/BindAnswerForm.async"
 import { Loader } from "shared/ui/Loader/Loader"
@@ -30,7 +30,6 @@ export const BindAnswerModal = (props: BindAnswerModalProps) => {
 		formId
 	} = props
 	
-	// todo: баг с монтировкой state | removeAfterUnmount
 	return (
 		<DynamicModuleLoader reducers={reducers}>
 			<Modal 

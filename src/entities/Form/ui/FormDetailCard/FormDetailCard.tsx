@@ -38,17 +38,18 @@ export const FormDetailCard = memo((props: FormDetailCardProps) => {
 	} = props
 
 	const renderQuestionBlock = useCallback((question: FormQuestion) => {
+		const classes = classNames(cls.question, {[cls.binded]: question.bindedAnswerIds?.length > 0}, []) 
 		switch(question.type) {
 			case "input": 
-				return <FormDetailCardInput key={question.id} className={cls.question} question={question} readonly={readonly}/>
+				return <FormDetailCardInput key={question.id} className={classes} question={question} readonly={readonly}/>
 			case "textarea":
-				return <FormDetailCardTextarea key={question.id} className={cls.question} question={question} readonly={readonly}/>
+				return <FormDetailCardTextarea key={question.id} className={classes} question={question} readonly={readonly}/>
 			case "radio": 
-				return <FormDetailCardRadio key={question.id} className={cls.question} question={question} readonly={readonly}/>
+				return <FormDetailCardRadio key={question.id} className={classes} question={question} readonly={readonly}/>
 			case "checkbox":
-				return <FormDetailCardCheckbox key={question.id} className={cls.question} question={question} readonly={readonly}/>
+				return <FormDetailCardCheckbox key={question.id} className={classes} question={question} readonly={readonly}/>
 			case "listbox":
-				return <FormDetailCardListbox key={question.id} className={cls.question} question={question} readonly={readonly}/>
+				return <FormDetailCardListbox key={question.id} className={classes} question={question} readonly={readonly}/>
 			default:
 				return null
 		}

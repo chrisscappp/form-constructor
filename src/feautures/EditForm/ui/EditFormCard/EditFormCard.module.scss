@@ -1,3 +1,7 @@
+.editableQuestion {
+	width: 100%;
+}
+
 .loaderWrap {
 	display: flex;
 	justify-content: center;
@@ -16,12 +20,17 @@
 
 .questions {
 	margin-top: 20px;
-	width: 50%;
 }
 
 .addForm {
 	margin-left: auto;
 	margin-bottom: 12px;
+}
+
+.binded {
+	padding: 25px;
+	border: 2px solid rgb(82, 131, 255);
+	border-radius: 16px;
 }
 
 .addFormIcon {

@@ -52,6 +52,12 @@ export const FormDetailCardListbox = memo((props: FormDetailCardListboxProps) =>
 				onChange={() => {}}
 				defaultValue={"Выберите значение"}
 			/>
+			{question && question.bindedAnswerIds?.length > 0 && (
+				<Text
+					text="*вопрос связан с одним из ответов"
+					className={cls.bindHint}
+				/>
+			)}
 		</VStack>
 	)
 })

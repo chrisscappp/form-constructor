@@ -64,11 +64,12 @@ export const EditFormCard = memo((props: EditFormCardProps) => {
 	const renderEditableBlock = useCallback((question: FormQuestion, qIndex: number) => {
 		//@ts-ignore
 		const errors: QuestionError = validateErrors?.questions[qIndex]
+		const classes = classNames(cls.editableQuestion, {[cls.binded]: question.bindedAnswerIds?.length > 0}, [])
 		switch(question.type) {
 			case "input": 
 				return <EditFormCardInput 
 					key={question.id}
-					className={cls.editableQuestion} 
+					className={classes} 
 					question={question}
 					qIndex={qIndex}
 					validateErrors={errors}
@@ -79,7 +80,7 @@ export const EditFormCard = memo((props: EditFormCardProps) => {
 			case "textarea": 
 				return <EditFormCardInput 
 					key={question.id}
-					className={cls.editableQuestion} 
+					className={classes} 
 					question={question}
 					qIndex={qIndex}
 					validateErrors={errors}
@@ -90,7 +91,7 @@ export const EditFormCard = memo((props: EditFormCardProps) => {
 			case "radio": 
 				return <EditFormCardRadio 
 					key={question.id}
-					className={cls.editableQuestion} 
+					className={classes} 
 					question={question}
 					qIndex={qIndex}
 					validateErrors={errors}
@@ -103,7 +104,7 @@ export const EditFormCard = memo((props: EditFormCardProps) => {
 			case "checkbox":
 				return <EditFormCardRadio 
 					key={question.id}
-					className={cls.editableQuestion} 
+					className={classes} 
 					question={question}
 					qIndex={qIndex}
 					validateErrors={errors}
@@ -116,7 +117,7 @@ export const EditFormCard = memo((props: EditFormCardProps) => {
 			case "listbox": 
 				return <EditFormCardRadio 
 					key={question.id}
-					className={cls.editableQuestion} 
+					className={classes} 
 					question={question}
 					qIndex={qIndex}
 					validateErrors={errors}

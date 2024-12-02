@@ -1,7 +1,7 @@
 import { memo } from "react"
 import cls from "./FormDetailCardTextarea.module.scss"
 import { classNames } from "shared/lib/classNames/classNames"
-import { FormQuestion, FormQuestionAnswer } from "../../model/types/form"
+import { FormQuestion } from "../../model/types/form"
 import { Text, TextSize } from "shared/ui/Text/Text"
 import { TextArea } from "shared/ui/Textarea/Textarea"
 import { VStack } from "shared/ui/Stack"
@@ -40,6 +40,12 @@ export const FormDetailCardTextarea = memo((props: FormDetailCardTextareaProps) 
 				readonly={readonly}
 				className={cls.inputField}
 			/>
+			{question && question.bindedAnswerIds?.length > 0 && (
+				<Text
+					text="*вопрос связан с одним из ответов"
+					className={cls.bindHint}
+				/>
+			)}
 		</VStack>
 	)
 })
