@@ -6,11 +6,11 @@ export interface FormQuestionAnswer {
 	content: string,
 	fieldType: FormQuestionType,
 	bindedQuestionIds: string[],
-	id: number
+	id: string
 }
 
 export interface FormQuestion {
-	id: number,
+	id: string,
 	formId: string,
 	title: string,
 	description?: string,

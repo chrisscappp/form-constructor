@@ -6,8 +6,8 @@ import { validateFormCard } from "../services/validateFormCard/validateFormCard"
 import { createNewForm } from "../services/createNewForm/createNewForm"
 import { fetchFormDetail } from "pages/FormPage"
 import { updateForm } from "../services/updateForm/updateForm"
-import { isAnswerShowQuestion } from "shared/lib/typeGuards/isAnswerShowQuestion/isAnswerShowQuestion"
-import { FormQuestionAnswer } from "entities/Form/model/types/form"
+import { FormQuestion } from "entities/Form/model/types/form"
+import { generateUniqueId } from "shared/lib/functions/generateUniqueId/generateUniqueId"
 
 const initialState: EditFormSchema = {
   isLoading: false
@@ -70,7 +70,7 @@ const editFormSlice = createSlice({
           content: "",
           fieldType,
           value: "",
-          id: question.answers.length + 1,
+          id: generateUniqueId(),
           bindedQuestionIds: []
         })
       }
@@ -78,8 +78,30 @@ const editFormSlice = createSlice({
     onDeleteAnswerField: (state, action: PayloadAction<{ qIndex: number, aIndex: number }>) => {
       const { aIndex, qIndex } = action.payload
       if (qIndex >= 0 && aIndex >= 0 && state.form) {
-        const question = JSON.parse(JSON.stringify(state.form.questions[qIndex]))
-        if (question) {
+        const question: FormQuestion = JSON.parse(JSON.stringify(state.form.questions[qIndex]))
+        if (question && question.answers) {
+          const bindedQuestions = question.answers[aIndex].bindedQuestionIds
+          const answerId = question.answers[aIndex].id
+          if (bindedQuestions.length > 0) {
+            bindedQuestions.forEach((bindedQId) => {
+              const findedQuestion = state.form?.questions.find(
+                (formQuestion) => String(formQuestion.id) === bindedQId
+              );
+              if (findedQuestion) {
+                const findedQuestionIndex =
+                  state.form?.questions.indexOf(findedQuestion);
+                if (findedQuestionIndex !== -1) {
+                  const filtredFindedQuestionBindAnswers =
+                    findedQuestion.bindedAnswerIds.filter(
+                      (id) => id !== String(answerId)
+                    );
+                  //@ts-ignore
+                  state.form?.questions[findedQuestionIndex].bindedAnswerIds =
+                    filtredFindedQuestionBindAnswers;
+                }
+              }
+            });
+          }
           question.answers.splice(aIndex, 1)
           state.form.questions[qIndex] = question
         }
@@ -203,7 +225,7 @@ const editFormSlice = createSlice({
     undoChangesForForm: (state) => {
       state.form = state.formData
     },
-    undoChangesForQuestion: (state, action: PayloadAction<{ qId: number, qIndex: number }>) => {
+    undoChangesForQuestion: (state, action: PayloadAction<{ qId: string, qIndex: number }>) => {
       const { qId, qIndex } = action.payload
       const oldQuestion = state.formData?.questions.find((q) => q.id === qId)
       if (oldQuestion && state.form && !state.isDebounceActive) {
@@ -225,7 +247,7 @@ const editFormSlice = createSlice({
             type: questionFieldType,
             valueType: questionValueType,
             answers: [],
-            id: questionsCount + 1,
+            id: generateUniqueId(),
             formId: state.form.id,
             bindedAnswerIds: []
           })

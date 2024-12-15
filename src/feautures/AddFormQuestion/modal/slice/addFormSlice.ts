@@ -1,10 +1,10 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit"
-import { AddFormQuestionChangedField, AddFormQuestionSchema } from "../types/addForm"
+import { AddFormQuestionSchema } from "../types/addForm"
 import { FormQuestionType, FormQuestionValueType } from "entities/Form"
 
 const initialState: AddFormQuestionSchema = {
   questionsCount: 1,
-  questionFieldType: { content: "Радио", value: "radio" },
+  questionFieldType: { content: "Один вариант ответа", value: "radio" },
   questionValueType: { content: "Строка", value: "string" }
 };
 
@@ -20,10 +20,10 @@ const addFormQuestionModalSlice = createSlice({
 			state.questionFieldType.value = action.payload
 			switch (action.payload) {
 				case "radio": 
-					state.questionFieldType.content = "Радио"
+					state.questionFieldType.content = "Один вариант ответа"
 					break
 				case "checkbox": 
-					state.questionFieldType.content = "Чекбокс"
+					state.questionFieldType.content = "Несколько вариантов ответа"
 					break
 				case "input": 
 					state.questionFieldType.content = "Поле ввода"

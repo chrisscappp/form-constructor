@@ -1,5 +1,4 @@
-export function generateUniqueId() {
-    const idLength = 4
+export function generateUniqueId(idLength = 20) {
     const charset = "AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvWwXxYyZz0123456789"
     let id = ""
 

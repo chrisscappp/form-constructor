@@ -1,8 +1,7 @@
 import { memo, useCallback, useEffect } from "react"
 import cls from "./AddFormQuestionForm.module.scss"
 import { classNames } from "shared/lib/classNames/classNames"
-import { Text, TextSize, TextTheme } from "shared/ui/Text/Text"
-import { Loader } from "shared/ui/Loader/Loader"
+import { Text, TextSize } from "shared/ui/Text/Text"
 import { Button, ButtonTheme } from "shared/ui/Button/Button"
 import { Form } from "shared/ui/Form/Form"
 import { useAppDispatch } from "shared/lib/hooks/useAppDispatch"
@@ -26,8 +25,8 @@ const selectCountOptions = [
 ]
 
 const selectFieldTypeOptions = [
-	{ content: "Радио", value: "radio", disabled: false },
-	{ content: "Чекбоск", value: "checkbox", disabled: false },
+	{ content: "Один вариант ответа", value: "radio", disabled: false },
+	{ content: "Несколько вариантов ответа", value: "checkbox", disabled: false },
 	{ content: "Поле ввода", value: "input", disabled: false },
 	{ content: "Большое поле ввода", value: "textarea", disabled: false },
 	{ content: "Выпадающий список", value: "listbox", disabled: false }

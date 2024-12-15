@@ -87,7 +87,7 @@ const BindAnswerForm = (props: BindAnswerFormProps) => {
 	}, [isHasNeedProps, answer])
 
 	return (
-		<Form className = {classNames('', {}, [className])}>
+		<Form className = {classNames(cls.BindAnswerForm, {}, [className])}>
 			<Text
 				title={"Привязать ответ к вопросу"}
 				size={TextSize.XL}

@@ -4,7 +4,7 @@ import { Text, TextSize } from "../Text/Text"
 import { memo } from "react"
 
 export interface RadioItem {
-	id: number,
+	id: string,
 	content: string;
 	value: string;
 }

@@ -28,13 +28,14 @@ export const createNewForm = createAsyncThunk<
 			return rejectWithValue(validateErrors)
 		}
 
-		const formDetail: Omit<FormDetail, "id"> = {
+		const formDetail: FormDetail = {
+			id: form?.id || "",
 			questionCount: form?.questionCount || 0,
 			questions: form?.questions || [],
 			authorId: 1,
 			date: form?.date || "",
 			filled: form?.filled || 0,
-			formLink: "",
+			formLink: `http://voenmeh-form.ru?formId=${form?.id}`,
 			title: form?.title || "",
 			description: form?.description || "",
 			isRealized: false
@@ -42,7 +43,7 @@ export const createNewForm = createAsyncThunk<
 
 		try {
 			const res = await extra.api.post("/addNewForm", formDetail)
-			console.log('res', res)
+			return res.data
 		} catch (e) {
 			console.error(e)
 			return rejectWithValue("Произошла ошибка при попытке создания формы. Попробуйте ещё раз...")

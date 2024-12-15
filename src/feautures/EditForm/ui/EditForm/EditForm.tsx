@@ -85,7 +85,7 @@ const EditForm = ({ formId, isCreateFormRoute, onOpenConfirmModal, onUndoChanges
 		dispatch(editFormActions.changeRadioField(data))
 	}, [dispatch])
 
-	const onUndoChangesForQuestion = useCallback((qId: number, qIndex: number) => {
+	const onUndoChangesForQuestion = useCallback((qId: string, qIndex: number) => {
 		dispatch(editFormActions.undoChangesForQuestion({
 			qId,
 			qIndex

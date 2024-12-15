@@ -4,7 +4,7 @@ import { Text, TextSize } from "../Text/Text"
 import { memo, ReactNode } from "react"
 
 export interface CheckboxItem {
-	id: number,
+	id: string,
 	content: string;
 	value: string;
 }

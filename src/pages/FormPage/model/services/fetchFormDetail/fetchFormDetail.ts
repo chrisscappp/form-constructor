@@ -22,13 +22,11 @@ export const fetchFormDetail = createAsyncThunk<
 		} = thunkAPI
 
 		try {
-    		const response = await extra.api.get<FormDetail>(`/getFormDetail/${id}`)
-		// 	await extra.api
-        // .post("/getFormQuestions", {
-        //   formId: "5Q3ngzfpJiWrja6UvfAX",
-        //   questionIds: ["JroJiyRvwh5vb1iVuYEs", "ZeF5GwCTnAcRYeykulBU"],
-        // })
-        // .then((res) => console.log("res", res));
+    		const response = await extra.api.get<FormDetail>(`/getFormDetail/${id}`, {
+				headers: {
+					'Content-Type': 'application/json'
+				}
+			})
 		    return response.data
 		} catch (e) {
 			console.error(e)

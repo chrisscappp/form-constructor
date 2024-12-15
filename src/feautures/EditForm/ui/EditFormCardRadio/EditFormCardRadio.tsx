@@ -26,7 +26,7 @@ interface EditFormCardRadioProps {
 	onAddRadioField?: (qIndex: number) => void,
 	onDeleteAnswerField?: (qIndex: number, aIndex: number) => void,
 	onChangeRadioField?: (data: ChangeRadioFieldActionPayload) => void,
-	onUndoChangesForQuestion?: (qId: number, qIndex: number) => void,
+	onUndoChangesForQuestion?: (qId: string, qIndex: number) => void,
 	onDeleteQuestion?: (qIndex: number) => void
 }
 
@@ -126,7 +126,7 @@ export const EditFormCardRadio = memo((props: EditFormCardRadioProps) => {
             			size={ButtonSize.L}
             			square
             			className={cls.btn}
-            			onClick={() => onUndoChangesForQuestion?.(question?.id ?? 0, qIndex)}
+            			onClick={() => onUndoChangesForQuestion?.(question?.id ?? "", qIndex)}
           			>
             			<UndoIcon className={cls.icon} />
           			</Button>

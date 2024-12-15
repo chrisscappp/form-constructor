@@ -18,7 +18,7 @@ interface EditFormCardInputProps {
 	qIndex?: number,
     validateErrors?: QuestionError,
 	onChangeInputField?: (data: ChangeInputFieldActionPayload) => void,
-	onUndoChangesForQuestion?: (qId: number, qIndex: number) => void,
+	onUndoChangesForQuestion?: (qId: string, qIndex: number) => void,
 	onDeleteQuestion?: (qIndex: number) => void
 }
 
@@ -99,7 +99,7 @@ export const EditFormCardInput = memo((props: EditFormCardInputProps) => {
             			size={ButtonSize.L}
             			square
             			className={cls.btn}
-            			onClick={() => onUndoChangesForQuestion?.(question?.id ?? 0, qIndex)}
+            			onClick={() => onUndoChangesForQuestion?.(question?.id ?? "", qIndex)}
           			>
             			<UndoIcon className={cls.icon} />
           			</Button>

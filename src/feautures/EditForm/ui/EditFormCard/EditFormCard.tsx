@@ -33,7 +33,7 @@ interface EditFormCardProps {
 	onAddRadioField?: (qIndex: number) => void,
 	onDeleteAnswerField?: (qIndex: number, aIndex: number) => void,
 	onChangeRadioField?: (data: ChangeRadioFieldActionPayload) => void,
-	onUndoChangesForQuestion?: (qId: number, qIndex: number) => void,
+	onUndoChangesForQuestion?: (qId: string, qIndex: number) => void,
 	onDeleteQuestion?: (qIndex: number) => void
 }
 

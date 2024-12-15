@@ -1,5 +1,5 @@
 import { classNames } from "shared/lib/classNames/classNames"
-import { Suspense, useEffect } from "react"
+import { Suspense } from "react"
 import { Modal } from "shared/ui/Modal/Modal"
 import { BindAnswerFormAsync } from "../BindAnswerForm/BindAnswerForm.async"
 import { Loader } from "shared/ui/Loader/Loader"
@@ -33,9 +33,9 @@ export const BindAnswerModal = (props: BindAnswerModalProps) => {
 	return (
 		<DynamicModuleLoader reducers={reducers}>
 			<Modal 
-				className = {classNames("", {}, [className])}
-				isOpen = {isOpen}
-				onClose = {onClose}
+				className={classNames("", {}, [className])}
+				isOpen={isOpen}
+				onClose={onClose}
 			>
 				<Suspense fallback = {<Loader/>}>
 					<BindAnswerFormAsync

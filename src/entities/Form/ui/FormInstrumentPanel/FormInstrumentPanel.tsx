@@ -46,8 +46,8 @@ export const FormInstrumentPanel = memo((props: FormInstrumentPanelProps) => {
   }, [formDetail, location])
 
   const onCopyFormLink = useCallback(() => {
-    if (formDetail?.formLink) {
-      navigator.clipboard.writeText(formDetail.formLink)
+    if (formDetail) {
+      navigator.clipboard.writeText(`http://voenmeh-form.ru?formId=${formDetail.id}`)
     } else if (formLink) {
       navigator.clipboard.writeText(formLink)
     }

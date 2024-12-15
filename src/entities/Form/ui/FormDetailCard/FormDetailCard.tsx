@@ -38,7 +38,11 @@ export const FormDetailCard = memo((props: FormDetailCardProps) => {
 	} = props
 
 	const renderQuestionBlock = useCallback((question: FormQuestion) => {
-		const classes = classNames(cls.question, {[cls.binded]: question.bindedAnswerIds?.length > 0}, []) 
+		const mods: Mods = {
+			[cls.binded]: question.bindedAnswerIds.length > 0,
+			[cls.hideQuestion]: !readonly && question.bindedAnswerIds.length > 0
+		}
+		const classes = classNames(cls.question, mods, []) 
 		switch(question.type) {
 			case "input": 
 				return <FormDetailCardInput key={question.id} className={classes} question={question} readonly={readonly}/>

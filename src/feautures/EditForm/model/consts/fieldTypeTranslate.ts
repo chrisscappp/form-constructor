@@ -1,9 +1,9 @@
 import { FormQuestionType } from "entities/Form";
 
 export const fieldTypeTranslate: Record<FormQuestionType, string> = {
-	checkbox: "Чекбокс",
+	checkbox: "Несколько вариантов ответа",
 	input: "Поле ввода",
-	radio: "Радио боксы",
+	radio: "Один вариант ответа",
 	textarea: "Большое поле ввода",
 	listbox: "Выпадающий список"
 }
